@@ -211,7 +211,38 @@
     }
     .paper-meta { font-size: 15px; color: var(--muted); margin: 0 0 12px 0; font-style: italic; }
     .paper-abstract { font-size: 16px; line-height: 1.7; margin: 0; }
-    .placeholder { font-style: italic; color: var(--muted); font-size: 16px; }
+    .placeholder {
+      font-style: italic; color: var(--muted);
+      font-size: 18px; text-align: center;
+      padding: 50px 20px; letter-spacing: 0.5px;
+    }
+    .teaching-period {
+      font-size: 15px; color: var(--muted);
+      font-style: italic; margin: 0 0 18px 0;
+    }
+    .teaching-courses-list {
+      list-style: none; padding: 0; margin: 0 0 20px 0;
+    }
+    .teaching-courses-list li {
+      font-size: 16px; line-height: 1.65;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .teaching-courses-list li:last-child { border-bottom: none; }
+    .teaching-courses-list li strong {
+      font-family: 'Inter', sans-serif;
+      color: var(--forest); font-weight: 700;
+      margin-right: 4px;
+    }
+    .teaching-skills {
+      font-size: 15px; color: var(--muted);
+      margin: 18px 0 0 0; padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .teaching-skills strong {
+      font-family: 'Inter', sans-serif;
+      color: var(--forest); font-weight: 600;
+    }
 
     /* TEACHING */
     .teaching-intro { font-size: 17px; line-height: 1.75; margin: 0 0 28px 0; max-width: 720px; }
@@ -385,37 +416,40 @@
   </div>
 
   <div class="tab-content" data-panel="research-working">
-    <p class="placeholder">Working papers will appear here.</p>
+    <p class="placeholder">Coming Soon</p>
   </div>
 
   <div class="tab-content" data-panel="research-pubs">
-    <p class="placeholder">Publications will appear here.</p>
+    <p class="placeholder">Coming Soon</p>
   </div>
 </section>
 
 <section id="teaching">
   <h2 class="section-heading">Teaching</h2>
-  <p class="teaching-intro">
-    I am a Graduate Teaching Assistant at the School of Economic Sciences,
-    Washington State University. I have supported the following undergraduate
-    courses since August 2023:
-  </p>
-  <div class="teaching-courses">
-    <div class="course-card">
-      <div class="course-code">EconS 327</div>
-      <div class="course-title">International Trade and Finance</div>
-      <div class="course-term">Fall 2023</div>
-    </div>
-    <div class="course-card">
-      <div class="course-code">EconS 102</div>
-      <div class="course-title">Macroeconomics</div>
-      <div class="course-term">Spring 2024 · Spring 2025</div>
-    </div>
-    <div class="course-card">
-      <div class="course-code">EconS 311</div>
-      <div class="course-title">Econometrics</div>
-      <div class="course-term">Fall 2024</div>
-    </div>
+  <div class="tab-buttons">
+    <button class="tab-btn active" data-target="teaching-instructor">Instructor</button>
+    <button class="tab-btn" data-target="teaching-ta">Teaching Assistant</button>
+  </div>
+
+  <div class="tab-content active" data-panel="teaching-instructor">
+    <p class="teaching-period">May 2025 &ndash; Present &middot; 1 yr 1 mo</p>
+    <ul class="teaching-courses-list">
+      <li><strong>EconS 102:</strong> Fundamentals of Macroeconomics (Summer 2026) &mdash; Washington State University (Global Campus).</li>
+      <li><strong>EconS 101:</strong> Fundamentals of Microeconomics (Fall 2025) &mdash; Washington State University (Global Campus).</li>
+      <li><strong>EconS 404:</strong> Economics for Managers (Summer 2025) &mdash; Washington State University (Global Campus). Taught microeconomics and game theory to a class of 20 students.</li>
+    </ul>
+    <p class="teaching-skills"><strong>Focus areas:</strong> Game Theory &middot; Microeconomics</p>
+  </div>
+
+  <div class="tab-content" data-panel="teaching-ta">
+    <p class="teaching-period">Aug 2023 &ndash; Apr 2025 &middot; 1 yr 9 mos</p>
+    <ul class="teaching-courses-list">
+      <li><strong>EconS 101:</strong> Fundamentals of Microeconomics (Spring 2026)</li>
+      <li><strong>EconS 102:</strong> Fundamentals of Macroeconomics (Spring 2025)</li>
+      <li><strong>EconS 311:</strong> Introductory Econometrics (Fall 2024)</li>
+      <li><strong>EconS 102:</strong> Fundamentals of Macroeconomics (Spring 2024)</li>
+      <li><strong>EconS 327:</strong> International Trade and Finance (Fall 2023)</li>
+    </ul>
   </div>
 </section>
 
