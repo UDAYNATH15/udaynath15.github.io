@@ -211,6 +211,32 @@
     }
     .paper-meta { font-size: 15px; color: var(--muted); margin: 0 0 12px 0; font-style: italic; }
     .paper-abstract { font-size: 16px; line-height: 1.7; margin: 0; }
+    .workshop-topics {
+      font-size: 14px; color: var(--muted);
+      margin: 10px 0 14px 0;
+    }
+    .workshop-topics strong {
+      font-family: 'Inter', sans-serif;
+      color: var(--forest); font-weight: 600;
+    }
+    .workshop-links {
+      display: flex; flex-wrap: wrap;
+      gap: 10px; margin-top: 8px;
+    }
+    .workshop-link {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; font-weight: 600;
+      color: var(--forest);
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 1.5px solid var(--forest);
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+    .workshop-link:hover {
+      background: var(--forest);
+      color: var(--cream);
+    }
     .placeholder {
       font-style: italic; color: var(--muted);
       font-size: 18px; text-align: center;
@@ -425,7 +451,16 @@
   </div>
 
   <div class="tab-content" data-panel="research-talks">
-    <p class="placeholder">Coming Soon</p>
+    <div class="research-paper">
+      <h3 class="paper-title">International Workshop on Survey Design and Experimental Methods in Applied and Agricultural Economics</h3>
+      <p class="paper-meta"><strong>Host:</strong> Department of Agricultural, Food, and Resource Economics, Michigan State University &middot; May 2025</p>
+      <p class="paper-abstract">Participant in the International Workshop on Survey Design and Experimental Methods in Applied and Agricultural Economics, organized by the Department of Agricultural, Food, and Resource Economics, Michigan State University.</p>
+      <p class="workshop-topics"><strong>Topics:</strong> Survey Design &middot; Discrete Choice Experiment &middot; NGENE &middot; NLOGIT</p>
+      <div class="workshop-links">
+        <a href="https://www.canr.msu.edu/afre/centers_services/Experimental-Economics-Workshop/index" target="_blank" rel="noopener" class="workshop-link">Workshop Page &nearr;</a>
+        <a href="MSU_Survey_Design_Certificate_May2025.pdf" target="_blank" rel="noopener" class="workshop-link">View Certificate (PDF)</a>
+      </div>
+    </div>
   </div>
 </section>
 
