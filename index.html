@@ -237,6 +237,21 @@
       background: var(--forest);
       color: var(--cream);
     }
+    .talk-images {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 14px 0 16px 0;
+    }
+    .talk-images img {
+      width: 100%; height: auto;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      display: block;
+    }
+    @media (max-width: 640px) {
+      .talk-images { grid-template-columns: 1fr; }
+    }
     .placeholder {
       font-style: italic; color: var(--muted);
       font-size: 18px; text-align: center;
@@ -451,6 +466,17 @@
   </div>
 
   <div class="tab-content" data-panel="research-talks">
+    <div class="research-paper">
+      <h3 class="paper-title">The Changing Landscape of Plastic Waste Trade and Its Impact on the Environment and Waste Management</h3>
+      <p class="paper-meta"><strong>Talk:</strong> School of Economic Sciences, Washington State University &middot; April 2026</p>
+      <p class="paper-abstract">Presented research on global plastic waste trade and environmental spillovers to first-year PhD and Master's students at WSU's School of Economic Sciences.</p>
+      <div class="talk-images">
+        <img src="talk_wsu_phd_seminar_2026_1.jpg" alt="Uday Nath presenting research on plastic waste trade at WSU SES, April 2026" />
+        <img src="talk_wsu_phd_seminar_2026_2.jpg" alt="Uday Nath presenting research on plastic waste trade at WSU SES, April 2026" />
+      </div>
+      <p class="workshop-topics"><strong>Slides:</strong> Available on request</p>
+    </div>
+
     <div class="research-paper">
       <h3 class="paper-title">International Workshop on Survey Design and Experimental Methods in Applied and Agricultural Economics</h3>
       <p class="paper-meta"><strong>Host:</strong> Department of Agricultural, Food, and Resource Economics, Michigan State University &middot; May 2025</p>
