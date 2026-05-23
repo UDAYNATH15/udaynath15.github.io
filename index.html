@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Uday Nath — PhD Candidate in Economics at Washington State University. Research in econometrics, international trade, and environmental economics.">
+  <title>Uday Nath — PhD Candidate in Economics, WSU</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --forest: #1F4E3D;
+      --cream:  #FAF7F2;
+      --ink:    #2B2B2B;
+      --gold:   #B8924C;
+      --muted:  #6B6B6B;
+      --line:   #E5DFD3;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body {
+      margin: 0; padding: 0;
+      background: var(--cream); color: var(--ink);
+      font-family: 'Lora', Georgia, serif;
+      font-size: 17px; line-height: 1.7;
+    }
+
+    /* HEADER */
+    .site-header {
+      position: sticky; top: 0; width: 100%; z-index: 100;
+      background: rgba(250, 247, 242, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .site-header-inner {
+      max-width: 1100px; margin: 0 auto; padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .site-name {
+      font-size: 20px; font-weight: 700;
+      color: var(--forest); text-decoration: none; letter-spacing: 0.2px;
+    }
+    .site-nav { list-style: none; display: flex; gap: 28px; margin: 0; padding: 0; flex-wrap: wrap; }
+    .site-nav a {
+      font-size: 15px; font-weight: 500; color: var(--ink); text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .site-nav a:hover { color: var(--forest); }
+
+    /* SECTIONS */
+    section { max-width: 1100px; margin: 0 auto; padding: 60px 24px; }
+    .section-heading {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 32px; font-weight: 700; color: var(--forest);
+      margin: 0 0 24px 0; padding-bottom: 8px;
+      border-bottom: 2px solid var(--forest); display: inline-block;
+    }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 280px 1fr; gap: 50px; align-items: start; }
+    .about-photo img {
+      width: 100%; height: auto; border-radius: 8px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+      background: #E5DFD3;
+    }
+    .about-content p { font-size: 17px; line-height: 1.75; margin: 0 0 20px 0; }
+    .about-interests { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 24px 0; }
+    .chip {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; font-weight: 500; color: var(--forest);
+      background: var(--cream); padding: 8px 18px;
+      border: 1.5px solid var(--forest); border-radius: 30px;
+    }
+    .about-contact a { color: var(--forest); text-decoration: none; border-bottom: 1px solid var(--gold); }
+    .about-contact a:hover { color: var(--gold); }
+    .about-social { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+    .about-social a {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px; font-weight: 600; color: var(--forest);
+      text-decoration: none; padding: 8px 18px;
+      border: 1.5px solid var(--forest); border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+    .about-social a:hover { background: var(--forest); color: var(--cream); }
+
+    /* TABS */
+    .tab-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 26px; }
+    .tab-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 600; padding: 12px 24px;
+      background: transparent; color: var(--forest);
+      border: 1.5px solid var(--forest); border-radius: 6px;
+      cursor: pointer; transition: all 0.2s ease;
+    }
+    .tab-btn:hover { background: var(--cream); }
+    .tab-btn.active { background: var(--forest); color: var(--cream); }
+    .tab-content { display: none; padding: 14px 0 30px 0; min-height: 240px; animation: fadeIn 0.3s ease; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* RESEARCH */
+    .research-paper { margin-bottom: 34px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+    .research-paper:last-child { border-bottom: none; padding-bottom: 0; }
+    .paper-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 19px; font-weight: 700; color: var(--forest);
+      margin: 0 0 8px 0; line-height: 1.4;
+    }
+    .paper-meta { font-size: 15px; color: var(--muted); margin: 0 0 12px 0; font-style: italic; }
+    .paper-abstract { font-size: 16px; line-height: 1.7; margin: 0; }
+    .placeholder { font-style: italic; color: var(--muted); font-size: 16px; }
+
+    /* TEACHING */
+    .teaching-intro { font-size: 17px; line-height: 1.75; margin: 0 0 28px 0; max-width: 720px; }
+    .teaching-courses { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .course-card {
+      background: #FFFFFF;
+      border: 1px solid var(--line); border-left: 4px solid var(--forest);
+      border-radius: 8px; padding: 22px 24px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .course-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+    .course-code {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; font-weight: 700; color: var(--gold);
+      letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase;
+    }
+    .course-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 17px; font-weight: 700; color: var(--forest);
+      margin-bottom: 8px; line-height: 1.3;
+    }
+    .course-term { font-size: 14px; color: var(--muted); font-style: italic; }
+
+    /* CV */
+    .cv-entry { margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+    .cv-entry:last-of-type { border-bottom: none; padding-bottom: 0; }
+    .cv-entry-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 17px; font-weight: 700; color: var(--forest); margin-bottom: 4px;
+    }
+    .cv-entry-org { font-size: 15px; color: var(--ink); margin-bottom: 4px; }
+    .cv-entry-date { font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 6px; }
+    .cv-entry-desc { font-size: 15px; line-height: 1.65; }
+    .cv-skills-group { margin-bottom: 22px; }
+    .cv-skills-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 700; color: var(--forest); margin-bottom: 6px;
+    }
+    .cv-skills-list { font-size: 16px; }
+    .cv-download { text-align: center; margin-top: 28px; }
+    .cv-download-link {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 600;
+      color: var(--cream); background: var(--forest);
+      padding: 12px 28px; border-radius: 6px;
+      text-decoration: none; display: inline-block;
+      transition: all 0.2s ease;
+    }
+    .cv-download-link:hover { background: var(--gold); }
+
+    /* CONTACT */
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; margin-bottom: 30px; }
+    .contact-item {
+      background: #FFFFFF;
+      border: 1px solid var(--line); border-radius: 8px;
+      padding: 22px 24px;
+    }
+    .contact-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; font-weight: 700; color: var(--gold);
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .contact-item a {
+      color: var(--forest); text-decoration: none; font-weight: 500;
+      border-bottom: 1px solid transparent; transition: border-color 0.2s ease;
+    }
+    .contact-item a:hover { border-bottom-color: var(--gold); }
+    .contact-text { font-size: 15px; line-height: 1.7; }
+    .contact-social-links { display: flex; flex-wrap: wrap; gap: 12px 16px; font-size: 15px; }
+
+    /* FOOTER */
+    .site-footer {
+      max-width: 1100px; margin: 0 auto;
+      padding: 24px; border-top: 1px solid var(--line);
+      text-align: center; font-size: 13px; color: var(--muted);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; gap: 28px; }
+      .about-photo { max-width: 260px; margin: 0 auto; }
+      .section-heading { font-size: 26px; }
+      .site-nav { gap: 16px; }
+      .site-nav a { font-size: 13px; }
+      section { padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-header">
+  <div class="site-header-inner">
+    <a href="#about" class="site-name">Uday Nath</a>
+    <ul class="site-nav">
+      <li><a href="#about">About</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#teaching">Teaching</a></li>
+      <li><a href="#cv">CV</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section id="about">
+  <div class="about-grid">
+    <div class="about-photo">
+      <img src="headshot.jpg" alt="Uday Nath, PhD Candidate in Economics at Washington State University" />
+    </div>
+    <div class="about-content">
+      <h2 class="section-heading">About</h2>
+      <p>
+        I am a third-year PhD candidate in Economics at Washington State University.
+        My research interests lie at the intersection of econometrics, international
+        trade, and environmental economics. I am currently a Graduate Assistant in
+        the School of Economic Sciences, where I serve in both teaching and research
+        roles. I expect to complete my doctorate in 2028.
+      </p>
+      <div class="about-interests">
+        <span class="chip">Econometrics</span>
+        <span class="chip">Environmental Economics</span>
+        <span class="chip">International Trade</span>
+        <span class="chip">Causal Inference</span>
+      </div>
+      <p class="about-contact">
+        <strong>Contact:</strong>
+        <a href="mailto:uday.nath@wsu.edu">uday.nath@wsu.edu</a>
+      </p>
+      <div class="about-social">
+        <a href="https://www.linkedin.com/in/uday-nath-196205191" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/UDAYNATH15" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>
+        <a href="https://ses.wsu.edu/phd-students/" target="_blank" rel="noopener">WSU Profile</a>
+        <a href="https://www.kaggle.com/udaynath15" target="_blank" rel="noopener">Kaggle</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="research">
+  <h2 class="section-heading">Research</h2>
+  <div class="tab-buttons">
+    <button class="tab-btn active" data-target="research-wip">Works in Progress</button>
+    <button class="tab-btn" data-target="research-working">Working Papers</button>
+    <button class="tab-btn" data-target="research-pubs">Publications</button>
+  </div>
+
+  <div class="tab-content active" data-panel="research-wip">
+    <div class="research-paper">
+      <h3 class="paper-title">The Changing Landscape of Plastic Waste Trade and Its Impact on the Environment and Waste Management</h3>
+      <p class="paper-meta"><strong>Advisor:</strong> Dr. Thomas L. Marsh</p>
+      <p class="paper-abstract">Evaluates global trade policy shocks (e.g., China's National Sword restriction) and the resulting market displacement and environmental spillover effects across secondary waste-management markets.</p>
+    </div>
+    <div class="research-paper">
+      <h3 class="paper-title">Spillover Effects of Trade Policies in the Agri-Food Global Value Chain</h3>
+      <p class="paper-meta"><strong>With:</strong> Dr. Jeff Luckstead</p>
+      <p class="paper-abstract">Analyzes structural trade adjustments, regulatory shifts, and network spillovers across primary international agri-food supply channels.</p>
+    </div>
+  </div>
+
+  <div class="tab-content" data-panel="research-working">
+    <p class="placeholder">Working papers will appear here.</p>
+  </div>
+
+  <div class="tab-content" data-panel="research-pubs">
+    <p class="placeholder">Publications will appear here.</p>
+  </div>
+</section>
+
+<section id="teaching">
+  <h2 class="section-heading">Teaching</h2>
+  <p class="teaching-intro">
+    I am a Graduate Teaching Assistant at the School of Economic Sciences,
+    Washington State University. I have supported the following undergraduate
+    courses since August 2023:
+  </p>
+  <div class="teaching-courses">
+    <div class="course-card">
+      <div class="course-code">EconS 327</div>
+      <div class="course-title">International Trade and Finance</div>
+      <div class="course-term">Fall 2023</div>
+    </div>
+    <div class="course-card">
+      <div class="course-code">EconS 102</div>
+      <div class="course-title">Macroeconomics</div>
+      <div class="course-term">Spring 2024 · Spring 2025</div>
+    </div>
+    <div class="course-card">
+      <div class="course-code">EconS 311</div>
+      <div class="course-title">Econometrics</div>
+      <div class="course-term">Fall 2024</div>
+    </div>
+  </div>
+</section>
+
+<section id="cv">
+  <h2 class="section-heading">CV</h2>
+  <div class="tab-buttons">
+    <button class="tab-btn active" data-target="cv-edu">Education</button>
+    <button class="tab-btn" data-target="cv-honors">Honors & Fellowships</button>
+    <button class="tab-btn" data-target="cv-skills">Skills</button>
+    <button class="tab-btn" data-target="cv-exp">Research Experience</button>
+  </div>
+
+  <div class="tab-content active" data-panel="cv-edu">
+    <div class="cv-entry">
+      <div class="cv-entry-title">PhD in Economics</div>
+      <div class="cv-entry-org">Washington State University</div>
+      <div class="cv-entry-date">2023 – 2028 (Expected)</div>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-entry-title">MSS in Economics</div>
+      <div class="cv-entry-org">University of Dhaka</div>
+      <div class="cv-entry-date">2022 – 2023</div>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-entry-title">BSS in Economics</div>
+      <div class="cv-entry-org">University of Dhaka</div>
+      <div class="cv-entry-date">2017 – 2021</div>
+    </div>
+  </div>
+
+  <div class="tab-content" data-panel="cv-honors">
+    <div class="cv-entry">
+      <div class="cv-entry-title">James C. Nelson Fellowship in Transportation Economics</div>
+      <div class="cv-entry-org">Washington State University</div>
+      <div class="cv-entry-date">2024</div>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-entry-title">Bachelor of Social Sciences (Hons) Scholarship</div>
+      <div class="cv-entry-org">University of Dhaka</div>
+      <div class="cv-entry-date">2020</div>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-entry-title">Governor Scholarship</div>
+      <div class="cv-entry-org">University of Dhaka</div>
+      <div class="cv-entry-date">2018 – 2021</div>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-entry-title">Board Scholarship</div>
+      <div class="cv-entry-org">University of Dhaka</div>
+    </div>
+  </div>
+
+  <div class="tab-content" data-panel="cv-skills">
+    <div class="cv-skills-group">
+      <div class="cv-skills-label">Software</div>
+      <div class="cv-skills-list">Python · R · Stata · LaTeX</div>
+    </div>
+    <div class="cv-skills-group">
+      <div class="cv-skills-label">Languages</div>
+      <div class="cv-skills-list">Bengali (Native) · English (Fluent)</div>
+    </div>
+  </div>
+
+  <div class="tab-content" data-panel="cv-exp">
+    <div class="cv-entry">
+      <div class="cv-entry-title">Research Assistant</div>
+      <div class="cv-entry-org">Washington State University · PI: Dr. Thomas L. Marsh</div>
+      <div class="cv-entry-date">July 2024 – August 2024</div>
+      <div class="cv-entry-desc">Economic modeling and data analysis.</div>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-entry-title">Research Associate</div>
+      <div class="cv-entry-org">Ecorys, Dhaka, Bangladesh</div>
+      <div class="cv-entry-date">March 2023 – April 2023</div>
+      <div class="cv-entry-desc">ADB CARES Programme; developed CBTSP tools; facilitated government policy workshops.</div>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-entry-title">Enumerator</div>
+      <div class="cv-entry-org">Ecorys, Dhaka, Bangladesh</div>
+      <div class="cv-entry-date">February 2023 – March 2023</div>
+      <div class="cv-entry-desc">Led field data collection and verification for social research.</div>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-entry-title">Research Assistant</div>
+      <div class="cv-entry-org">University of Dhaka</div>
+      <div class="cv-entry-date">August 2022 – March 2023</div>
+      <div class="cv-entry-desc">UGC-funded project on social sustainability in the readymade garment industry during COVID-19.</div>
+    </div>
+  </div>
+
+  <p class="cv-download">
+    <a href="Uday_Nath_CV.pdf" target="_blank" rel="noopener" class="cv-download-link">
+      ↓ Download Full CV
+    </a>
+  </p>
+</section>
+
+<section id="contact">
+  <h2 class="section-heading">Contact</h2>
+  <div class="contact-grid">
+    <div class="contact-item">
+      <div class="contact-label">Email</div>
+      <a href="mailto:uday.nath@wsu.edu">uday.nath@wsu.edu</a>
+    </div>
+    <div class="contact-item">
+      <div class="contact-label">Office</div>
+      <div class="contact-text">
+        Hulbert Hall 107B<br>
+        School of Economic Sciences<br>
+        Washington State University<br>
+        Pullman, WA 99164
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-label">Find me online</div>
+      <div class="contact-social-links">
+        <a href="https://www.linkedin.com/in/uday-nath-196205191" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/UDAYNATH15" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://scholar.google.com/" target="_blank" rel="noopener">Google Scholar</a>
+        <a href="https://ses.wsu.edu/phd-students/" target="_blank" rel="noopener">WSU Profile</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  © 2026 Uday Nath · Built with care in Pullman, WA
+</footer>
+
+<script>
+(function() {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const container = btn.closest('section');
+      container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      container.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      container.querySelector('[data-panel="' + btn.dataset.target + '"]').classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
