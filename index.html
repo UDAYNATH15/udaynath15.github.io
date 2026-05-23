@@ -114,10 +114,26 @@
     }
     .site-nav { list-style: none; display: flex; gap: 28px; margin: 0; padding: 0; flex-wrap: wrap; }
     .site-nav a {
-      font-size: 15px; font-weight: 500; color: var(--ink); text-decoration: none;
+      font-size: 15px; font-weight: 500;
+      color: var(--ink); text-decoration: none;
+      padding: 6px 2px; position: relative;
+      cursor: pointer;
       transition: color 0.2s ease;
     }
+    .site-nav a::after {
+      content: '';
+      position: absolute;
+      left: 2px; right: 2px; bottom: 0;
+      height: 2px;
+      background: var(--forest);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.25s ease;
+    }
     .site-nav a:hover { color: var(--forest); }
+    .site-nav a:hover::after,
+    .site-nav a.active::after { transform: scaleX(1); }
+    .site-nav a.active { color: var(--forest); font-weight: 600; }
 
     /* SECTIONS */
     section { max-width: 1100px; margin: 0 auto; padding: 60px 24px; }
@@ -530,6 +546,7 @@
 
 <script>
 (function() {
+  // ---- Tab switching (Research + CV) ----
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const container = btn.closest('section');
@@ -539,6 +556,26 @@
       container.querySelector('[data-panel="' + btn.dataset.target + '"]').classList.add('active');
     });
   });
+
+  // ---- Active-section highlight (scroll-spy) ----
+  const navLinks = document.querySelectorAll('.site-nav a');
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+
+  function updateActiveNav() {
+    const scrollPos = window.scrollY + 120; // offset for sticky header
+    let current = sections.length ? sections[0].id : '';
+    sections.forEach(sec => {
+      if (scrollPos >= sec.offsetTop) current = sec.id;
+    });
+    navLinks.forEach(link => {
+      const isActive = link.getAttribute('href') === '#' + current;
+      link.classList.toggle('active', isActive);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  window.addEventListener('load', updateActiveNav);
+  updateActiveNav();
 })();
 </script>
 
