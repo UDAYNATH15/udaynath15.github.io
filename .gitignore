@@ -11,3 +11,10 @@
 
 # OS-generated
 Thumbs.db
+
+# Private memory/notes file for Uday + Claude — never publish to the website
+CLAUDE.md
+
+# CV workspace (LaTeX source + compiled PDF) — the published copy lives at the
+# repo root as Uday_Nath_CV.pdf
+CV/
