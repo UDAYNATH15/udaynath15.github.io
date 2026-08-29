@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Studio Toolkit — EconS 329</title>
+<meta name="description" content="Interactive economics tools for game pitches: plan your budget, break-even, and 3-year NPV. Built with agentic AI for EconS 329 (The Economics of Gaming) at WSU.">
+<meta name="author" content="Uday Nath">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#1F4E3D; --cream:#FAF7F2; --ink:#2B2B2B; --gold:#B8924C;
+    --muted:#6B6B6B; --line:#E5DFD3; --white:#FFFFFF; --good:#1F4E3D; --bad:#9C3A2E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.55}
+  h1,h2,h3{font-family:'Lora',Georgia,serif;color:var(--forest)}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+  header{border-bottom:1px solid var(--line);background:rgba(250,247,242,.96);padding:26px 0 18px}
+  header .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  header h1{font-size:32px;margin:4px 0 6px}
+  header p{color:var(--muted);max-width:640px;font-size:15px}
+  header a{color:var(--forest)}
+  nav.tabs{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+  .tab-btn{font-family:'Inter',sans-serif;font-size:14px;font-weight:600;border:1px solid var(--forest);
+    background:transparent;color:var(--forest);padding:8px 18px;border-radius:20px;cursor:pointer}
+  .tab-btn:hover{background:var(--white)}
+  .tab-btn.active{background:var(--forest);color:var(--cream)}
+  main{padding:30px 0 10px}
+  section.tool{display:none}
+  section.tool.active{display:block}
+  .intro{color:var(--muted);font-size:15px;max-width:680px;margin:4px 0 22px}
+  /* Roadmap */
+  .stage{background:var(--white);border:1px solid var(--line);border-radius:10px;margin-bottom:14px;overflow:hidden}
+  .stage>button.head{width:100%;text-align:left;background:none;border:none;padding:16px 18px;cursor:pointer;
+    display:flex;align-items:center;gap:12px;font-family:'Lora',serif;font-size:18px;color:var(--forest)}
+  .stage .num{background:var(--forest);color:var(--cream);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;
+    width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:none}
+  .stage .count{margin-left:auto;font-family:'Inter',sans-serif;font-size:13px;color:var(--muted)}
+  .stage .body{display:none;padding:0 18px 14px}
+  .stage.open .body{display:block}
+  .check{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line);font-size:14.5px}
+  .check input{margin-top:3px;width:16px;height:16px;accent-color:var(--forest);flex:none}
+  .check .crit{display:block;font-size:12.5px;color:var(--gold);font-weight:600;letter-spacing:.03em;margin-top:2px}
+  .progress-outer{background:var(--line);border-radius:6px;height:10px;margin:6px 0 22px;overflow:hidden}
+  .progress-inner{background:var(--forest);height:100%;width:0%;border-radius:6px;transition:width .3s}
+  .progress-label{font-size:13px;color:var(--muted);margin-bottom:4px}
+  /* Simulator */
+  .sim-grid{display:grid;grid-template-columns:minmax(300px,430px) 1fr;gap:26px;align-items:start}
+  @media(max-width:820px){.sim-grid{grid-template-columns:1fr}}
+  .panel{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:18px}
+  .panel h3{font-size:16px;margin-bottom:10px}
+  .panel + .panel{margin-top:16px}
+  .field{margin:12px 0}
+  .field label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;margin-bottom:4px}
+  .field label output{color:var(--forest);font-weight:700;font-variant-numeric:tabular-nums}
+  .field input[type=range]{width:100%;accent-color:var(--forest)}
+  .field select{width:100%;padding:7px;border:1px solid var(--line);border-radius:6px;font-family:'Inter',sans-serif;font-size:14px;background:var(--cream)}
+  .hint{font-size:12px;color:var(--muted);margin-top:2px}
+  .mode-row{display:flex;gap:8px;margin:6px 0 2px}
+  .mode-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--forest);background:transparent;
+    color:var(--forest);font-weight:600;font-size:13.5px;cursor:pointer}
+  .mode-btn.active{background:var(--forest);color:var(--cream)}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+  .tile{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .tile .t-label{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .tile .t-value{font-size:26px;font-weight:700;color:var(--forest);font-variant-numeric:tabular-nums;margin-top:2px}
+  .tile .t-sub{font-size:12px;color:var(--muted)}
+  .tile.npv-pos .t-value{color:var(--good)}
+  .tile.npv-neg .t-value{color:var(--bad)}
+  .verdict{border-left:4px solid var(--gold);background:var(--white);border-radius:0 10px 10px 0;
+    padding:12px 16px;font-size:14.5px;margin:0 0 16px}
+  .chart-box{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .chart-box h3{font-size:15px;margin-bottom:2px}
+  .chart-box .sub{font-size:12.5px;color:var(--muted);margin-bottom:8px}
+  .econ-note{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:13.5px;margin-top:16px}
+  .econ-note strong{color:var(--forest)}
+  table.cash{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px}
+  table.cash th,table.cash td{text-align:right;padding:6px 8px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+  table.cash th:first-child,table.cash td:first-child{text-align:left}
+  table.cash th{color:var(--muted);font-weight:600;font-size:12.5px}
+  /* About */
+  .about p{max-width:680px;margin-bottom:14px;font-size:15px}
+  footer{border-top:1px solid var(--line);margin-top:36px;padding:20px 0 30px;font-size:13px;color:var(--muted)}
+  footer a{color:var(--forest)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">EconS 329 · The Economics of Gaming · WSU</div>
+    <h1>Game Studio Toolkit</h1>
+    <p>Interactive tools for thinking through the <em>economics</em> of your game pitch — budget, break-even,
+       market, and monetization. Built by <a href="https://udaynath15.github.io/">Uday Nath</a> with an AI agent,
+       one feature per week. <strong>Optional and ungraded</strong> — a sanity-check companion, not a submission tool.</p>
+    <nav class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="simulator" role="tab">Studio Simulator</button>
+      <button class="tab-btn" data-tab="roadmap" role="tab">Pitch Roadmap</button>
+      <button class="tab-btn" data-tab="about" role="tab">About &amp; Changelog</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ============ SIMULATOR ============ -->
+<section id="simulator" class="tool active">
+  <p class="intro">Run your game studio on paper. Set a team, a location, a timeline and a monetization model —
+  and see your <strong>total cost, break-even point, and 3-year revenue projection discounted at 5%</strong>
+  (the same discount rate your business plan asks for).</p>
+
+  <div class="sim-grid">
+    <div>
+      <div class="panel">
+        <h3>Development team</h3>
+        <div class="field"><label>Programmers <output id="o-prog">2</output></label>
+          <input type="range" id="prog" min="0" max="15" value="2"></div>
+        <div class="field"><label>Artists <output id="o-art">1</output></label>
+          <input type="range" id="art" min="0" max="15" value="1"></div>
+        <div class="field"><label>Designer / writer <output id="o-des">1</output></label>
+          <input type="range" id="des" min="0" max="10" value="1"></div>
+        <div class="field"><label>Audio / music <output id="o-aud">0</output></label>
+          <input type="range" id="aud" min="0" max="5" value="0"></div>
+        <div class="field">
+          <label for="loc">Studio location</label>
+          <select id="loc"></select>
+          <div class="hint">Average monthly salary per developer differs by labor market — the location question from Assignment 3.</div>
+        </div>
+        <div class="field"><label><span>Pay yourself a founder salary</span>
+          <input type="checkbox" id="founder" checked style="accent-color:var(--forest);width:16px;height:16px"></label>
+          <div class="hint">The business plan brief says to budget your own salary during development.</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Timeline &amp; marketing</h3>
+        <div class="field"><label>Development time <output id="o-months">12 months</output></label>
+          <input type="range" id="months" min="3" max="48" value="12"></div>
+        <div class="field"><label>Marketing budget <output id="o-mkt">$50,000</output></label>
+          <input type="range" id="mkt" min="0" max="1000000" step="10000" value="50000"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Monetization model</h3>
+        <div class="mode-row">
+          <button class="mode-btn active" id="btn-premium" type="button">Premium (pay up front)</button>
+          <button class="mode-btn" id="btn-f2p" type="button">Free-to-play</button>
+        </div>
+        <div id="premium-fields">
+          <div class="field"><label>Price <output id="o-price">$20</output></label>
+            <input type="range" id="price" min="1" max="70" value="20"></div>
+          <div class="field"><label>Year-1 units you'd sell at a $20 price <output id="o-units">10,000</output></label>
+            <input type="range" id="units" min="500" max="200000" step="500" value="10000"></div>
+          <div class="hint">Raise the price and watch demand fall — the simulator applies a price elasticity of −1.5,
+            so a 10% higher price means ~15% fewer units. The store takes a 30% cut.</div>
+        </div>
+        <div id="f2p-fields" style="display:none">
+          <div class="field"><label>Year-1 downloads <output id="o-dl">100,000</output></label>
+            <input type="range" id="dl" min="5000" max="2000000" step="5000" value="100000"></div>
+          <div class="field"><label>Conversion to paying players <output id="o-conv">3%</output></label>
+            <input type="range" id="conv" min="0.5" max="10" step="0.5" value="3"></div>
+          <div class="field"><label>Average revenue per paying player / year <output id="o-arppu">$40</output></label>
+            <input type="range" id="arppu" min="5" max="200" step="5" value="40"></div>
+          <div class="hint">Free players still earn ~$1/year each in ads. In F2P, the conversion rate rules everything —
+            this is why "free" games are a real business model when the marginal copy costs nothing.</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tiles">
+        <div class="tile"><div class="t-label">Total cost</div><div class="t-value" id="t-cost">—</div><div class="t-sub" id="t-cost-sub"></div></div>
+        <div class="tile"><div class="t-label">Break-even</div><div class="t-value" id="t-be">—</div><div class="t-sub" id="t-be-sub"></div></div>
+        <div class="tile" id="tile-npv"><div class="t-label">3-year NPV @ 5%</div><div class="t-value" id="t-npv">—</div><div class="t-sub">net present value</div></div>
+      </div>
+      <div class="verdict" id="verdict"></div>
+      <div class="chart-box">
+        <h3>Cost today vs. discounted revenue by year</h3>
+        <div class="sub">Revenues in years 1–3 are discounted at 5% per year — a dollar next year is worth $0.95 today.</div>
+        <canvas id="chart" width="520" height="240" style="width:100%;max-width:560px" role="img"
+          aria-label="Bar chart comparing total cost with discounted revenues in years one to three"></canvas>
+        <table class="cash" id="cashtable"></table>
+      </div>
+      <div class="econ-note" id="econ-note"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section id="roadmap" class="tool">
+  <p class="intro">The four parts of your final pitch, as a self-check. Under each part are the questions your
+  presentation will actually be evaluated on — check them off as your proposal can answer them.
+  Your progress is saved in this browser.</p>
+  <div class="progress-label"><span id="prog-text">0 of 0 checks</span></div>
+  <div class="progress-outer"><div class="progress-inner" id="prog-bar"></div></div>
+  <div id="stages"></div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="tool about">
+  <h2 style="font-size:22px;margin-bottom:10px">About this project</h2>
+  <p>This toolkit is a semester-long build for <strong>EconS 329 — The Economics of Gaming</strong> at
+  Washington State University. Each week, one feature is added — built by describing what's needed to an AI agent
+  (Claude), reviewing the result, and publishing it here. The point is twofold: give students a fast way to test
+  the numbers behind their game proposals, and show, live, how software gets built by working with an AI.</p>
+  <p>It is <strong>optional and ungraded</strong>. Nothing here is submitted; the official course lives in Canvas.
+  Numbers produced by the simulator are teaching estimates, not market research — your own cited sources always win.</p>
+  <p>Follow the build: the <a href="https://github.com/UDAYNATH15/udaynath15.github.io/commits/main">commit history</a>
+  shows every change, week by week.</p>
+  <h2 style="font-size:22px;margin:22px 0 10px">Changelog</h2>
+  <table class="cash" style="max-width:680px">
+    <tr><th>Week</th><th style="text-align:left">What was added</th></tr>
+    <tr><td>Week 2</td><td style="text-align:left">v1 — Studio Simulator (budget, break-even, 3-yr NPV @ 5%) and Pitch Roadmap</td></tr>
+  </table>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Built with Claude (Anthropic) for EconS 329, Fall 2026 · © Uday Nath ·
+    <a href="https://udaynath15.github.io/">udaynath15.github.io</a>
+  </div>
+</footer>
+
+<script>
+"use strict";
+/* ---------- tabs ---------- */
+document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll("section.tool").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  document.getElementById(b.dataset.tab).classList.add("active");
+}));
+
+/* ---------- roadmap data (paraphrased from the course rubric) ---------- */
+const STAGES=[
+ {title:"What is the game?",checks:[
+   ["A non-gamer could understand the concept, mechanics and progression from my description","Game Idea & Economic Rationale"],
+   ["I can explain how rewards and progression are designed to shape player behavior","Game Idea & Economic Rationale"],
+   ["I connect the idea to several economic concepts — incentives, differentiation, demand","Game Idea & Economic Rationale"],
+   ["I can name similar games and say why mine is better","Market Analysis & Competition"]]},
+ {title:"Who is it for?",checks:[
+   ["Genre, platform and geographic market are clearly identified","Market Analysis & Competition"],
+   ["The target market is justified with economic logic, not just preference","Market Analysis & Competition"],
+   ["I compare against several competitors, including their pricing or business models","Market Analysis & Competition"]]},
+ {title:"What does it cost, and who pays for it?",checks:[
+   ["I have an organized budget: development, labor and marketing","Cost Structure & Budget"],
+   ["I can explain the trade-offs — why money is allocated the way it is","Cost Structure & Budget"],
+   ["I name the risks, missing costs and uncertainties","Cost Structure & Budget"],
+   ["Development phases and a timeline run from concept to launch","Development Plan & Funding"],
+   ["My funding strategy has an economic justification — risk, cash flow, staging","Development Plan & Funding"],
+   ["I know how my labor needs change across phases, and why","Development Plan & Funding"]]},
+ {title:"How does it make money?",checks:[
+   ["The monetization model and pricing strategy are explicit","Monetization & Revenue"],
+   ["Choices are justified with incentives, elasticity or player behavior","Monetization & Revenue"],
+   ["Risks like black markets, real-money trading or player backlash are addressed","Monetization & Revenue"],
+   ["I can defend every number out loud — the Q&A criterion","Professional Communication & Q&A"]]}
+];
+const stagesEl=document.getElementById("stages");
+let saved={};
+try{saved=JSON.parse(localStorage.getItem("econ329-roadmap")||"{}")}catch(e){saved={}}
+STAGES.forEach((st,si)=>{
+  const div=document.createElement("div");div.className="stage"+(si===0?" open":"");
+  const done=()=>st.checks.filter((_,ci)=>saved[si+"-"+ci]).length;
+  div.innerHTML=`<button class="head" type="button"><span class="num">${si+1}</span>${st.title}
+    <span class="count"></span></button><div class="body"></div>`;
+  const body=div.querySelector(".body");
+  st.checks.forEach((c,ci)=>{
+    const id=si+"-"+ci;
+    const row=document.createElement("label");row.className="check";
+    row.innerHTML=`<input type="checkbox" ${saved[id]?"checked":""}><span>${c[0]}<span class="crit">Rubric: ${c[1]}</span></span>`;
+    row.querySelector("input").addEventListener("change",e=>{
+      saved[id]=e.target.checked;
+      try{localStorage.setItem("econ329-roadmap",JSON.stringify(saved))}catch(err){}
+      refresh();
+    });
+    body.appendChild(row);
+  });
+  div.querySelector(".head").addEventListener("click",()=>div.classList.toggle("open"));
+  div.refreshCount=()=>{div.querySelector(".count").textContent=done()+" / "+st.checks.length};
+  stagesEl.appendChild(div);
+});
+function refresh(){
+  const total=STAGES.reduce((a,s)=>a+s.checks.length,0);
+  const done=Object.values(saved).filter(Boolean).length;
+  document.getElementById("prog-text").textContent=done+" of "+total+" checks";
+  document.getElementById("prog-bar").style.width=(100*done/total)+"%";
+  [...stagesEl.children].forEach(d=>d.refreshCount());
+}
+refresh();
+
+/* ---------- simulator ---------- */
+const LOCS=[
+ ["US — West Coast (Seattle, SF, LA)",1.00,9500],
+ ["US — Midwest / South",0.78,9500],
+ ["Canada (Vancouver, Montréal)",0.75,9500],
+ ["Western Europe (UK, Germany, Nordics)",0.85,9500],
+ ["Eastern Europe (Poland, Ukraine, Serbia)",0.42,9500],
+ ["India",0.28,9500],
+ ["Southeast Asia (Philippines, Vietnam)",0.32,9500]
+];
+const locSel=document.getElementById("loc");
+LOCS.forEach((l,i)=>{const o=document.createElement("option");o.value=i;o.textContent=l[0];locSel.appendChild(o)});
+/* base monthly salaries at US-West = programmer 10000, artist 7000, designer 7500, audio 6500 */
+const BASE={prog:10000,art:7000,des:7500,aud:6500};
+const OVERHEAD=0.22;          /* rent, utilities, software, hardware as share of payroll */
+const FOUNDER_MO=4000;        /* modest founder salary */
+const STORE_CUT=0.30;         /* platform fee on premium sales */
+const ELASTICITY=-1.5;        /* price elasticity of demand, teaching value */
+const REF_PRICE=20;
+const AD_RPU=1.0;             /* $/yr per non-paying F2P player */
+const DECAY=[1,0.45,0.22];    /* year 1-3 revenue decay */
+const R=0.05;                 /* discount rate — matches the business plan brief */
+
+let mode="premium";
+document.getElementById("btn-premium").addEventListener("click",()=>setMode("premium"));
+document.getElementById("btn-f2p").addEventListener("click",()=>setMode("f2p"));
+function setMode(m){mode=m;
+  document.getElementById("btn-premium").classList.toggle("active",m==="premium");
+  document.getElementById("btn-f2p").classList.toggle("active",m==="f2p");
+  document.getElementById("premium-fields").style.display=m==="premium"?"":"none";
+  document.getElementById("f2p-fields").style.display=m==="f2p"?"":"none";
+  calc();
+}
+const $=id=>document.getElementById(id);
+const fmt=n=>"$"+Math.round(n).toLocaleString("en-US");
+const fmtK=n=>Math.round(n).toLocaleString("en-US");
+["prog","art","des","aud","months","mkt","price","units","dl","conv","arppu","loc"].forEach(id=>{
+  $(id).addEventListener("input",calc)});
+$("founder").addEventListener("change",calc);
+
+function calc(){
+  const nProg=+$("prog").value,nArt=+$("art").value,nDes=+$("des").value,nAud=+$("aud").value;
+  const months=+$("months").value, mkt=+$("mkt").value;
+  const mult=LOCS[+$("loc").value][1];
+  $("o-prog").textContent=nProg;$("o-art").textContent=nArt;$("o-des").textContent=nDes;$("o-aud").textContent=nAud;
+  $("o-months").textContent=months+" months";$("o-mkt").textContent=fmt(mkt);
+
+  const payrollMo=(nProg*BASE.prog+nArt*BASE.art+nDes*BASE.des+nAud*BASE.aud)*mult;
+  const founder=$("founder").checked?FOUNDER_MO*months:0;
+  const devCost=payrollMo*months*(1+OVERHEAD)+founder;
+  const totalCost=devCost+mkt;
+
+  /* revenue model */
+  let rev1=0, beText="—", beSub="", noteExtra="";
+  if(mode==="premium"){
+    const price=+$("price").value, baseUnits=+$("units").value;
+    $("o-price").textContent="$"+price;$("o-units").textContent=fmtK(baseUnits);
+    const units=baseUnits*Math.pow(price/REF_PRICE,ELASTICITY);
+    const net=price*(1-STORE_CUT);
+    rev1=units*net;
+    const beUnits=net>0?totalCost/net:Infinity;
+    beText=fmtK(beUnits);
+    beSub="units at $"+price+" (you keep "+fmt(net)+"/unit after the 30% store cut)";
+    noteExtra="<strong>Elasticity in action:</strong> at $"+price+" the model expects "+fmtK(units)+
+      " year-1 units (elasticity −1.5 around your $20 estimate). Try $10 and $40 and watch revenue — "+
+      "the price that maximizes revenue is rarely the highest one.";
+  }else{
+    const dl=+$("dl").value, conv=+$("conv").value/100, arppu=+$("arppu").value;
+    $("o-dl").textContent=fmtK(dl);$("o-conv").textContent=(conv*100)+"%";$("o-arppu").textContent="$"+arppu;
+    rev1=dl*conv*arppu+dl*(1-conv)*AD_RPU;
+    const perPayer=arppu;
+    const bePayers=perPayer>0?totalCost/perPayer:Infinity;
+    beText=fmtK(bePayers);
+    beSub="paying players (ignoring ad revenue) at $"+arppu+"/yr each";
+    noteExtra="<strong>The F2P lever:</strong> at "+(conv*100)+"% conversion, "+fmtK(dl*conv)+
+      " players pay and "+fmtK(dl*(1-conv))+" play free. Nudge conversion by half a point and compare — "+
+      "in free-to-play, conversion beats downloads.";
+  }
+  const revs=DECAY.map(d=>rev1*d);
+  const disc=revs.map((r,i)=>r/Math.pow(1+R,i+1));
+  const npv=disc.reduce((a,b)=>a+b,0)-totalCost;
+
+  $("t-cost").textContent=fmt(totalCost);
+  $("t-cost-sub").textContent=fmt(payrollMo)+"/mo payroll + "+Math.round(OVERHEAD*100)+"% overhead + marketing";
+  $("t-be").textContent=beText;$("t-be-sub").textContent=beSub;
+  $("t-npv").textContent=(npv<0?"−":"")+fmt(Math.abs(npv)).slice(0,1)+fmt(Math.abs(npv)).slice(1);
+  const tile=$("tile-npv");tile.classList.toggle("npv-pos",npv>=0);tile.classList.toggle("npv-neg",npv<0);
+
+  const v=$("verdict");
+  if(npv>=0){
+    v.innerHTML="✅ <strong>Fundable on paper.</strong> Discounted 3-year revenue exceeds cost by "+fmt(npv)+
+      ". An investor's next questions: what are the risks, and how confident are the revenue assumptions?";
+  }else{
+    v.innerHTML="⚠️ <strong>Under water by "+fmt(-npv)+".</strong> Cut costs (smaller team, cheaper location, shorter timeline) "+
+      "or defend a stronger revenue case. This is precisely the trade-off conversation your pitch must survive.";
+  }
+  $("econ-note").innerHTML="<strong>The economics you're using:</strong> salaries × months = your <strong>fixed cost</strong> "+
+    "(games cost the same to build whether 10 or 10 million people play). Extra copies are nearly free — "+
+    "<strong>zero marginal cost</strong> — which is why the whole battle is recovering the fixed cost. "+noteExtra;
+
+  /* table */
+  $("cashtable").innerHTML="<tr><th>Year</th><th>Revenue</th><th>Discounted @ 5%</th></tr>"+
+    revs.map((r,i)=>"<tr><td>Year "+(i+1)+"</td><td>"+fmt(r)+"</td><td>"+fmt(disc[i])+"</td></tr>").join("")+
+    "<tr><td><strong>Total</strong></td><td><strong>"+fmt(revs.reduce((a,b)=>a+b,0))+"</strong></td><td><strong>"+
+    fmt(disc.reduce((a,b)=>a+b,0))+"</strong></td></tr>";
+
+  drawChart(totalCost,disc);
+}
+
+function drawChart(cost,disc){
+  const c=$("chart"),ctx=c.getContext("2d");
+  const W=c.width,H=c.height,padL=10,padB=34,padT=26;
+  ctx.clearRect(0,0,W,H);
+  const vals=[cost,...disc];
+  const labels=["Total cost","Yr 1 rev","Yr 2 rev","Yr 3 rev"];
+  const colors=["#B8924C","#1F4E3D","#1F4E3D","#1F4E3D"];
+  const max=Math.max(...vals,1);
+  const bw=90,gap=(W-padL*2-bw*4)/3;
+  ctx.font="600 12px Inter, sans-serif";
+  vals.forEach((v,i)=>{
+    const h=Math.max(3,(H-padB-padT)*v/max);
+    const x=padL+i*(bw+gap), y=H-padB-h;
+    ctx.fillStyle=colors[i];
+    ctx.beginPath();ctx.roundRect(x,y,bw,h,[4,4,0,0]);ctx.fill();
+    ctx.fillStyle="#2B2B2B";ctx.textAlign="center";
+    ctx.fillText(shortMoney(v),x+bw/2,y-7);
+    ctx.fillStyle="#6B6B6B";
+    ctx.fillText(labels[i],x+bw/2,H-padB+16);
+  });
+  ctx.strokeStyle="#E5DFD3";ctx.beginPath();ctx.moveTo(padL,H-padB+.5);ctx.lineTo(W-padL,H-padB+.5);ctx.stroke();
+}
+function shortMoney(v){
+  if(v>=1e6)return "$"+(v/1e6).toFixed(2).replace(/\.?0+$/,"")+"M";
+  if(v>=1e3)return "$"+Math.round(v/1e3)+"K";
+  return "$"+Math.round(v);
+}
+calc();
+</script>
+</body>
+</html>
