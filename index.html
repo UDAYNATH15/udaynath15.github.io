@@ -287,6 +287,16 @@
       font-family: 'Inter', sans-serif;
       color: var(--forest); font-weight: 600;
     }
+    /* Teaching Materials: one group per course (EconS 329, …) */
+    .materials-group + .materials-group { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line); }
+    .materials-course {
+      font-family: 'Inter', sans-serif;
+      font-size: 19px; font-weight: 700; color: var(--forest);
+      margin: 0 0 4px 0; line-height: 1.4;
+    }
+    .materials-course-meta { font-size: 15px; color: var(--muted); font-style: italic; margin: 0 0 6px 0; }
+    .teaching-courses-list a { color: var(--forest); text-decoration: none; border-bottom: 1px solid var(--gold); }
+    .teaching-courses-list a:hover { color: var(--gold); }
 
     /* TEACHING */
     .teaching-intro { font-size: 17px; line-height: 1.75; margin: 0 0 28px 0; max-width: 720px; }
@@ -521,9 +531,13 @@
   </div>
 
   <div class="tab-content" data-panel="teaching-materials">
-    <ul class="teaching-courses-list">
-      <li><strong><a href="/econs329-toolkit/">Game Studio Toolkit</a>:</strong> an interactive economics companion for EconS 329 (The Economics of Gaming) &mdash; students stress-test the budget, break-even point, and 3-year NPV of their game pitch, and self-check against the course rubric. Built by Uday for EconS 329, one feature per week across the semester; the <a href="https://github.com/UDAYNATH15/udaynath15.github.io/commits/main">commit history</a> documents the build.</li>
-    </ul>
+    <div class="materials-group">
+      <h3 class="materials-course">EconS 329</h3>
+      <p class="materials-course-meta">The Economics of Gaming &middot; Fall 2026 &middot; WSU Global Campus</p>
+      <ul class="teaching-courses-list">
+        <li><strong><a href="/econs329-toolkit/">Game Studio Toolkit</a>:</strong> an interactive economics companion for the course &mdash; students size up how crowded their market is, stress-test the budget, break-even point, and 3-year NPV of their game pitch, and self-check against the course rubric. Built by Uday for EconS 329, one feature per week across the semester; the <a href="https://github.com/UDAYNATH15/udaynath15.github.io/commits/main">commit history</a> documents the build.</li>
+      </ul>
+    </div>
   </div>
 </section>
 
