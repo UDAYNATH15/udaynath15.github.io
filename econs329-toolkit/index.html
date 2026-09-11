@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Game Studio Toolkit — EconS 329</title>
-<meta name="description" content="Interactive economics tools for game pitches: plan your budget, break-even, and 3-year NPV. Built by Uday Nath for EconS 329 (The Economics of Gaming) at WSU.">
+<meta name="description" content="Interactive economics tools for game pitches: size up your market, plan your budget, break-even, and 3-year NPV. Built by Uday Nath for EconS 329 (The Economics of Gaming) at WSU.">
 <meta name="author" content="Uday Nath">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -80,6 +80,60 @@
   table.cash th,table.cash td{text-align:right;padding:6px 8px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
   table.cash th:first-child,table.cash td:first-child{text-align:left}
   table.cash th{color:var(--muted);font-weight:600;font-size:12.5px}
+  /* Market Scanner */
+  .field input[type=text],.field input[type=number]{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:6px;
+    font-family:'Inter',sans-serif;font-size:14px;background:var(--cream);color:var(--ink)}
+  .field input:focus-visible,.field select:focus-visible,.store-link:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+  .store-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .store-link{font-size:13px;font-weight:600;color:var(--forest);border:1px solid var(--line);background:var(--cream);
+    padding:6px 11px;border-radius:16px;text-decoration:none}
+  .store-link:hover{border-color:var(--forest);background:var(--white)}
+  .store-link[aria-disabled=true]{color:var(--muted);border-style:dashed}
+  .clock{display:flex;align-items:baseline;gap:12px;margin:2px 0 8px;flex-wrap:wrap}
+  .clock-time{font-size:40px;font-weight:700;color:var(--forest);font-variant-numeric:tabular-nums;line-height:1.1}
+  .clock-sub{font-size:13px;color:var(--muted)}
+  .btn-primary{width:100%;margin-top:8px;padding:9px;border-radius:8px;border:1px solid var(--forest);background:var(--forest);
+    color:var(--cream);font-weight:600;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif}
+  .btn-primary:hover{background:#173C2F}
+  .btn-secondary{padding:9px 14px;border-radius:8px;border:1px solid var(--forest);background:transparent;color:var(--forest);
+    font-weight:600;font-size:13.5px;cursor:pointer;font-family:'Inter',sans-serif}
+  .btn-secondary:hover{background:var(--white)}
+  .linkish{background:none;border:none;color:var(--muted);font-size:12.5px;text-decoration:underline;cursor:pointer;margin-top:12px;font-family:'Inter',sans-serif}
+  .form-error{font-size:12.5px;color:var(--bad);min-height:18px;margin-top:4px}
+  .meter{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .meter-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .meter-head .t-label{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .meter-tier{font-size:20px;font-weight:700;color:var(--forest)}
+  .meter-tier small{font-size:13px;font-weight:600;color:var(--muted);margin-left:6px}
+  .meter-track{position:relative;height:12px;border-radius:6px;background:#DCE7E1;margin:10px 0 6px;overflow:hidden}
+  .meter-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--forest);border-radius:0 6px 6px 0;transition:width .4s}
+  .meter-tick{position:absolute;top:0;bottom:0;width:2px;background:var(--white)}
+  .meter-scale{position:relative;height:16px;font-size:12px;color:var(--muted)}
+  .meter-scale span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
+  .table-scroll{overflow-x:auto}
+  table.comp th,table.comp td{padding:6px 5px;white-space:nowrap}
+  table.comp td:first-child{white-space:normal;min-width:110px}
+  table.comp .meta{display:block;font-size:12px;color:var(--muted)}
+  @media(max-width:480px){table.comp th:nth-child(2),table.comp td:nth-child(2),
+    table.comp th:nth-child(5),table.comp td:nth-child(5){display:none}}
+  .rm{background:none;border:none;color:var(--muted);cursor:pointer;font-size:17px;line-height:1;padding:0 4px}
+  .rm:hover{color:var(--bad)}
+  .mode-btn:disabled{opacity:.45;cursor:default}
+  .sim-grid>div{min-width:0}
+  .pos-wrap{position:relative;overflow-x:auto}
+  .pos-wrap svg{display:block}
+  .tip.below{transform:translateY(14px)}
+  .pos-wrap .hit{cursor:pointer}
+  .pos-wrap .hit:focus{outline:none}
+  .tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--cream);font-size:12.5px;padding:7px 10px;border-radius:6px;
+    white-space:nowrap;transform:translateY(calc(-100% - 12px));z-index:2}
+  .tip strong{display:block;font-size:13.5px;font-variant-numeric:tabular-nums}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  details.how{margin-top:12px;font-size:13px;color:var(--muted)}
+  details.how summary{cursor:pointer;color:var(--forest);font-weight:600}
+  details.how p{margin-top:6px}
+  .empty{font-size:13.5px;color:var(--muted);padding:26px 8px;text-align:center}
   /* About */
   .about p{max-width:680px;margin-bottom:14px;font-size:15px}
   footer{border-top:1px solid var(--line);margin-top:36px;padding:20px 0 30px;font-size:13px;color:var(--muted)}
@@ -97,6 +151,7 @@
        one feature per week. <strong>Optional and ungraded</strong> — a sanity-check companion, not a submission tool.</p>
     <nav class="tabs" role="tablist">
       <button class="tab-btn active" data-tab="simulator" role="tab">Studio Simulator</button>
+      <button class="tab-btn" data-tab="scanner" role="tab">Market Scanner</button>
       <button class="tab-btn" data-tab="roadmap" role="tab">Pitch Roadmap</button>
       <button class="tab-btn" data-tab="about" role="tab">About &amp; Changelog</button>
     </nav>
@@ -188,6 +243,98 @@
   </div>
 </section>
 
+<!-- ============ MARKET SCANNER ============ -->
+<section id="scanner" class="tool">
+  <p class="intro">How crowded is your market? Assignment 1 asked you to find five games similar to yours — and to notice
+  how long that took. Run that test here with a stopwatch, log what you find, and get a competition snapshot for the
+  <strong>Market Analysis &amp; Competition</strong> part of your pitch. Everything is saved in this browser only.</p>
+
+  <div class="sim-grid">
+    <div>
+      <div class="panel">
+        <h3>1 · Your game</h3>
+        <div class="field"><label for="sc-kw">Describe it in a few keywords</label>
+          <input type="text" id="sc-kw" maxlength="80" placeholder="e.g. cozy farming sim" autocomplete="off"></div>
+        <div class="field"><label for="sc-myprice">Your planned price <output id="o-sc-myprice">$20</output></label>
+          <input type="range" id="sc-myprice" min="0" max="70" value="20">
+          <div class="hint">$0 means free-to-play. Your price is marked on the positioning map.</div></div>
+        <div class="field"><label>Search the stores</label>
+          <div class="store-row" id="sc-links"></div>
+          <div class="hint">Each store opens in a new tab with your keywords.</div></div>
+      </div>
+
+      <div class="panel">
+        <h3>2 · The five-game test</h3>
+        <div class="clock"><div class="clock-time" id="sc-clock">0:00</div>
+          <div class="clock-sub" id="sc-clock-sub">Start the clock, then search.</div></div>
+        <div class="mode-row">
+          <button class="mode-btn" id="sc-start" type="button">Start the clock</button>
+          <button class="mode-btn" id="sc-giveup" type="button">I can't find five</button>
+        </div>
+        <form id="sc-form" novalidate>
+          <div class="field"><label for="sc-name">Similar game you found</label>
+            <input type="text" id="sc-name" maxlength="60" placeholder="Game title" autocomplete="off"></div>
+          <div class="two-col">
+            <div class="field"><label for="sc-sim">How similar?</label>
+              <select id="sc-sim"><option value="close">Very close</option><option value="similar" selected>Similar</option><option value="loose">Loosely related</option></select></div>
+            <div class="field"><label for="sc-model">Business model</label>
+              <select id="sc-model"><option value="premium">Premium</option><option value="f2p">Free-to-play</option><option value="sub">Subscription</option></select></div>
+            <div class="field"><label for="sc-price">Price (US$)</label>
+              <input type="number" id="sc-price" min="0" max="200" step="0.01" placeholder="e.g. 19.99"></div>
+            <div class="field"><label for="sc-year">Release year</label>
+              <input type="number" id="sc-year" min="1970" max="2030" step="1" placeholder="optional"></div>
+          </div>
+          <div class="field"><label for="sc-reviews">Store reviews or ratings</label>
+            <input type="number" id="sc-reviews" min="0" step="1" placeholder="optional, e.g. 12400">
+            <div class="hint">A rough popularity signal. Games with a count appear on the positioning map.</div></div>
+          <button class="btn-primary" type="submit">Log this game</button>
+          <div class="form-error" id="sc-err" role="alert"></div>
+        </form>
+        <button class="linkish" id="sc-reset" type="button">Clear everything and start over</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="tiles">
+        <div class="tile"><div class="t-label">Time to five</div><div class="t-value" id="sc-t-time">—</div><div class="t-sub" id="sc-t-time-sub">0 of 5 logged</div></div>
+        <div class="tile"><div class="t-label">Median price</div><div class="t-value" id="sc-t-price">—</div><div class="t-sub" id="sc-t-price-sub">premium competitors</div></div>
+        <div class="tile"><div class="t-label">Free-to-play share</div><div class="t-value" id="sc-t-f2p">—</div><div class="t-sub" id="sc-t-f2p-sub">of competitors logged</div></div>
+      </div>
+      <div class="meter">
+        <div class="meter-head"><span class="t-label">Market saturation</span><span class="meter-tier" id="sc-tier">Waiting for five games</span></div>
+        <div class="meter-track" role="meter" aria-label="Market saturation score" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="sc-meter">
+          <div class="meter-fill" id="sc-meter-fill"></div>
+          <div class="meter-tick" style="left:40%"></div><div class="meter-tick" style="left:65%"></div>
+        </div>
+        <div class="meter-scale"><span style="left:20%">Open niche</span><span style="left:52.5%">Competitive</span><span style="left:82.5%">Crowded</span></div>
+      </div>
+      <div class="verdict" id="sc-verdict" aria-live="polite">Log the similar games you find, and the verdict appears here.</div>
+      <div class="chart-box">
+        <h3>Positioning map</h3>
+        <div class="sub">Each dot is a competitor: its price across, its store reviews up (log scale). The gold line is your price.</div>
+        <div class="pos-wrap" id="sc-map"></div>
+        <div class="table-scroll"><table class="cash comp" id="sc-table"></table></div>
+        <div class="actions">
+          <button class="btn-secondary" id="sc-to-sim" type="button" hidden></button>
+          <button class="btn-secondary" id="sc-copy" type="button" hidden>Copy summary</button>
+        </div>
+      </div>
+      <div class="econ-note"><strong>The economics you're using:</strong> games that players see as close <strong>substitutes</strong>
+        compete for the same time and money, so the more of them there are, the more <strong>price-elastic</strong> demand for yours
+        becomes — raise your price and players switch. Digital games have low <strong>barriers to entry</strong> (cheap tools,
+        near-zero marginal cost, open storefronts), which is why popular genres fill up fast. The way out is
+        <strong>product differentiation</strong>: give players a reason your game has no close substitute.
+        <details class="how"><summary>How the verdict works</summary>
+          <p>The saturation score (0–100) blends three signals from the first five games you log: how fast you found them
+          (50% — two minutes or less scores highest, thirty minutes or more lowest), how close they are to your idea (35%),
+          and how many launched in the last three years (15%). Below 40 reads as an open niche, 40–65 as competitive, above
+          65 as crowded. It is a rule of thumb for thinking, not market research — your own cited sources always win.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ROADMAP ============ -->
 <section id="roadmap" class="tool">
   <p class="intro">The four parts of your final pitch, as a self-check. Under each part are the questions your
@@ -203,7 +350,7 @@
   <h2 style="font-size:22px;margin-bottom:10px">About this project</h2>
   <p>This toolkit is a semester-long build for <strong>EconS 329 — The Economics of Gaming</strong> at
   Washington State University. Each week, one feature is added and published here. The goal: give students a fast
-  way to test the numbers behind their game proposals — budget, break-even, and net present value — against the
+  way to test the numbers behind their game proposals — market, budget, break-even, and net present value — against the
   same criteria the course uses.</p>
   <p>It is <strong>optional and ungraded</strong>. Nothing here is submitted; the official course lives in Canvas.
   Numbers produced by the simulator are teaching estimates, not market research — your own cited sources always win.</p>
@@ -213,6 +360,7 @@
   <table class="cash" style="max-width:680px">
     <tr><th>Week</th><th style="text-align:left">What was added</th></tr>
     <tr><td>Week 2</td><td style="text-align:left">v1 — Studio Simulator (budget, break-even, 3-yr NPV @ 5%) and Pitch Roadmap</td></tr>
+    <tr><td>Week 4</td><td style="text-align:left">Market Scanner — the timed five-similar-games test, with a saturation verdict, a price-vs-popularity positioning map, and a one-click hand-off of competitor pricing to the Simulator</td></tr>
   </table>
 </section>
 
@@ -227,13 +375,21 @@
 
 <script>
 "use strict";
-/* ---------- tabs ---------- */
-document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",()=>{
-  document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
+/* ---------- tabs (a #hash like #scanner opens that tab directly) ---------- */
+function showTab(id){
+  const btn=document.querySelector('.tab-btn[data-tab="'+id+'"]');
+  if(!btn)return;
+  document.querySelectorAll(".tab-btn").forEach(x=>{x.classList.remove("active");x.setAttribute("aria-selected","false")});
   document.querySelectorAll("section.tool").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active");
-  document.getElementById(b.dataset.tab).classList.add("active");
+  btn.classList.add("active");btn.setAttribute("aria-selected","true");
+  document.getElementById(id).classList.add("active");
+  document.dispatchEvent(new CustomEvent("tabshown",{detail:id}));
+}
+document.querySelectorAll(".tab-btn").forEach(b=>b.addEventListener("click",()=>{
+  showTab(b.dataset.tab);
+  try{history.replaceState(null,"","#"+b.dataset.tab)}catch(e){}
 }));
+if(location.hash)showTab(location.hash.slice(1));
 
 /* ---------- roadmap data (paraphrased from the course rubric) ---------- */
 const STAGES=[
@@ -429,6 +585,339 @@ function shortMoney(v){
   return "$"+Math.round(v);
 }
 calc();
+
+/* ---------- market scanner ---------- */
+const SC_KEY="econ329-scanner";
+const THIS_YEAR=new Date().getFullYear();
+const SIM_W={close:1,similar:0.6,loose:0.25};              /* how much each match counts toward saturation */
+const SIM_LABEL={close:"Very close",similar:"Similar",loose:"Loosely related"};
+const MODEL_LABEL={premium:"Premium",f2p:"Free-to-play",sub:"Subscription"};
+const MODEL_SHORT={premium:"Premium",f2p:"F2P",sub:"Sub"};
+const STORES=[
+ ["Steam",q=>"https://store.steampowered.com/search/?term="+q],
+ ["itch.io",q=>"https://itch.io/search?q="+q],
+ ["Google Play",q=>"https://play.google.com/store/search?q="+q+"&c=apps"],
+ ["App Store",q=>"https://www.google.com/search?q=site%3Aapps.apple.com+"+q]
+];
+let sc={kw:"",myPrice:20,games:[],elapsed:0,clockUsed:false,gaveUp:false};
+try{const s=JSON.parse(localStorage.getItem(SC_KEY)||"null");if(s&&Array.isArray(s.games))sc=Object.assign(sc,s)}catch(e){}
+sc.running=false;sc.startedAt=null;                          /* a reload pauses the clock rather than losing it */
+let scTick=null;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtPrice=v=>v===0?"Free":"$"+(Math.round(v*100)%100?v.toFixed(2):String(Math.round(v)));
+const fmtClock=s=>{s=Math.max(0,Math.floor(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")};
+const fmtDur=s=>{s=Math.round(s);const m=Math.floor(s/60),r=s%60;return m?m+" min"+(r?" "+r+" s":""):r+" s"};
+const shortCount=v=>v>=1e6?(v/1e6)+"M":v>=1e3?(v/1e3)+"K":String(v);
+const priceText=g=>g.model==="f2p"?"Free":fmtPrice(g.price)+(g.model==="sub"?"/mo":"");
+const tierName=s=>s>=65?"Crowded":s>=40?"Competitive":"Open niche";
+
+function scElapsed(){return sc.running?sc.elapsed+(Date.now()-sc.startedAt)/1000:sc.elapsed}
+function scSave(){
+  try{localStorage.setItem(SC_KEY,JSON.stringify({kw:sc.kw,myPrice:sc.myPrice,games:sc.games,
+    elapsed:scElapsed(),clockUsed:sc.clockUsed,gaveUp:sc.gaveUp}))}catch(e){}
+}
+function scStop(){if(sc.running){sc.elapsed=scElapsed();sc.running=false;clearInterval(scTick)}}
+function scStart(){
+  if(sc.running)scStop();
+  else{sc.running=true;sc.startedAt=Date.now();sc.clockUsed=true;scTick=setInterval(scRenderClock,250)}
+  scSave();scRender();
+}
+/* the fifth game logged on the clock is the test result */
+function scT5(){
+  if(sc.games.length<5)return null;
+  const t=sc.games.map(g=>g.foundAt).filter(v=>v!=null).sort((a,b)=>a-b);
+  return t.length>=5?t[4]:null;
+}
+function scScore(){
+  const n=sc.games.length;
+  if(n<5&&!sc.gaveUp)return null;
+  const five=sc.games.slice(0,5);
+  const closeness=five.reduce((a,g)=>a+SIM_W[g.sim],0)/5;
+  const dated=five.filter(g=>g.year);
+  const recency=dated.length?dated.filter(g=>g.year>=THIS_YEAR-2).length/dated.length:0.5;
+  const t5=scT5();
+  let s;
+  if(n<5)s=0.35*closeness+0.15*recency;                     /* could not find five: speed scores zero */
+  else if(t5==null)s=0.7*closeness+0.3*recency;             /* untimed: the other two signals only */
+  else{
+    const speed=Math.min(1,Math.max(0,1-Math.log(Math.max(t5,120)/120)/Math.log(15)));  /* 2 min = 1, 30 min = 0 */
+    s=0.5*speed+0.35*closeness+0.15*recency;
+  }
+  return {score:Math.round(100*Math.min(1,s)),closeness,dated,t5,five};
+}
+
+function scVerdict(r){
+  const n=sc.games.length, tier=tierName(r.score);
+  const rv=sc.games.filter(g=>g.reviews>0);
+  const leader=rv.length?rv.reduce((a,g)=>g.reviews>a.reviews?g:a):(sc.games.find(g=>g.sim==="close")||sc.games[0]);
+  let html;
+  if(tier==="Crowded"){
+    html="<strong>Crowded market.</strong> You found five similar games"+(r.t5!=null?" in "+fmtDur(r.t5):"")+
+      ". Players have plenty of close substitutes, so demand for any one title is very price-sensitive. Your pitch has to "+
+      "answer an investor's first question: why would a player choose yours over <em>"+esc(leader.name)+"</em>?";
+  }else if(tier==="Competitive"){
+    html="<strong>Competitive, with room for a differentiated entrant.</strong> "+
+      (n>=5?(r.t5!=null?"Five similar games took "+fmtDur(r.t5)+" to find":"You found five similar games"):
+        "You found "+n+" similar game"+(n===1?"":"s")+" before stopping")+
+      " — evidence that players want this kind of game, without a wall of clones. Lead your pitch with what makes yours different.";
+  }else{
+    html="<strong>Thin market — a niche, or a warning.</strong> "+
+      (n>=5?"Five similar games took "+(r.t5!=null?fmtDur(r.t5):"a long search")+" to find"+(r.closeness<0.5?", and most are only loosely related":""):
+        n===0?"You did not find a similar game":"You found only "+n+" similar game"+(n===1?"":"s"))+
+      ". An empty market can be an underserved niche (an opportunity) or a sign of weak demand (a risk). Back your pitch with "+
+      "evidence that players want this: adjacent genres, active communities, search interest.";
+  }
+  const extras=[];
+  if(r.five.length>=5&&r.five.filter(g=>g.sim==="loose").length>=3&&tier!=="Open niche")
+    extras.push("Most of your five are only loosely related — your idea may be more distinctive than the clock suggests. Try sharper keywords before concluding.");
+  const recent=r.dated.filter(g=>g.year>=THIS_YEAR-2).length;
+  if(r.dated.length>=3&&recent>=3)
+    extras.push(recent+" of them launched since "+(THIS_YEAR-2)+": new studios are entering right now — a sign of low barriers to entry, which tends to compete profits away.");
+  else if(r.dated.length>=3&&r.dated.every(g=>g.year<=THIS_YEAR-5))
+    extras.push("None of them is recent — either a gap nobody has filled lately, or a genre players have moved on from. Find out which.");
+  if(rv.length>=3){
+    const share=leader.reviews/rv.reduce((a,g)=>a+g.reviews,0);
+    if(share>=0.5)extras.push("<em>"+esc(leader.name)+"</em> holds "+Math.round(share*100)+"% of the reviews among the games you logged — one dominant leader. "+
+      "Entrants into concentrated markets usually target the players the leader leaves out.");
+  }
+  if(n>=5&&r.t5==null)extras.push("Untimed — start the clock next time for the full test.");
+  return html+(extras.length?'<span style="display:block;margin-top:8px">'+extras.join(" ")+"</span>":"");
+}
+
+function scRenderClock(){
+  const n=sc.games.length, t5=scT5(), el=scElapsed();
+  $("sc-clock").textContent=fmtClock(el);
+  const btn=$("sc-start");
+  btn.textContent=sc.running?"Pause":n>=5?"Test complete":(sc.clockUsed&&el>0?"Resume":"Start the clock");
+  btn.disabled=!sc.running&&n>=5;
+  btn.classList.toggle("active",sc.running);
+  $("sc-clock-sub").textContent=sc.running?Math.min(n,5)+" of 5 found — keep searching.":
+    n>=5&&t5!=null?"Five similar games in "+fmtDur(t5)+".":
+    sc.gaveUp?"Stopped at "+n+" of 5.":
+    sc.clockUsed&&el>0?"Paused.":"Start the clock, then search.";
+}
+function scRenderLinks(){
+  const q=encodeURIComponent(sc.kw.trim()), row=$("sc-links");
+  row.textContent="";
+  STORES.forEach(([label,url])=>{
+    const a=document.createElement("a");a.className="store-link";a.textContent=label;
+    if(q){a.href=url(q);a.target="_blank";a.rel="noopener"}
+    else{a.href="#sc-kw";a.setAttribute("aria-disabled","true");a.title="Add keywords first";
+      a.addEventListener("click",ev=>{ev.preventDefault();$("sc-kw").focus()})}
+    row.appendChild(a);
+  });
+}
+function scRenderTiles(){
+  const n=sc.games.length, t5=scT5();
+  $("sc-t-time").textContent=t5!=null?fmtClock(t5):n>=5?"Untimed":"—";
+  $("sc-t-time-sub").textContent=Math.min(n,5)+" of 5 logged"+(n>5?" (+"+(n-5)+" more)":"");
+  const prem=sc.games.filter(g=>g.model==="premium").map(g=>g.price).sort((a,b)=>a-b), k=prem.length;
+  const med=k?(k%2?prem[(k-1)/2]:(prem[k/2-1]+prem[k/2])/2):null;
+  $("sc-t-price").textContent=med==null?"—":fmtPrice(Math.round(med*100)/100);
+  $("sc-t-price-sub").textContent=k?"across "+k+" premium competitor"+(k===1?"":"s"):"no premium competitors yet";
+  const f2p=sc.games.filter(g=>g.model==="f2p").length;
+  $("sc-t-f2p").textContent=n?Math.round(100*f2p/n)+"%":"—";
+  $("sc-t-f2p-sub").textContent=n?f2p+" of "+n+" competitor"+(n===1?"":"s"):"of competitors logged";
+  return {med,f2pShare:n?f2p/n:0};
+}
+function scRenderMeter(r){
+  const m=$("sc-meter"), tier=$("sc-tier");
+  if(!r){
+    $("sc-meter-fill").style.width="0%";
+    tier.textContent=sc.games.length?sc.games.length+" of 5 found":"Waiting for five games";
+    m.setAttribute("aria-valuenow","0");m.setAttribute("aria-valuetext","Not scored yet");return;
+  }
+  $("sc-meter-fill").style.width=r.score+"%";
+  tier.textContent=tierName(r.score);
+  const sm=document.createElement("small");sm.textContent=r.score+" / 100";tier.appendChild(sm);
+  m.setAttribute("aria-valuenow",String(r.score));m.setAttribute("aria-valuetext",tierName(r.score)+", "+r.score+" out of 100");
+}
+function scRenderTable(){
+  const t=$("sc-table");t.textContent="";
+  if(!sc.games.length)return;
+  const hr=t.insertRow();
+  ["Game","Model","Price","Reviews","Found at",""].forEach(h=>{
+    const th=document.createElement("th");th.textContent=h;hr.appendChild(th)});
+  sc.games.forEach((g,i)=>{
+    const tr=t.insertRow(), first=tr.insertCell();
+    const nm=document.createElement("span");nm.textContent=(i+1)+". "+g.name;
+    const meta=document.createElement("span");meta.className="meta";meta.textContent=SIM_LABEL[g.sim]+(g.year?" · "+g.year:"");
+    first.append(nm,meta);
+    [MODEL_SHORT[g.model],priceText(g),g.reviews!=null?fmtK(g.reviews):"—",
+     g.foundAt!=null?fmtClock(g.foundAt):"—"].forEach(v=>{tr.insertCell().textContent=v});
+    const b=document.createElement("button");b.className="rm";b.type="button";b.textContent="×";
+    b.title="Remove";b.setAttribute("aria-label","Remove "+g.name);
+    b.addEventListener("click",()=>{sc.games.splice(i,1);scSave();scRender()});
+    tr.insertCell().appendChild(b);
+  });
+}
+function scDrawMap(){
+  const box=$("sc-map");box.textContent="";
+  const pts=sc.games.filter(g=>g.reviews>0);
+  if(pts.length<2){
+    const p=document.createElement("div");p.className="empty";
+    p.textContent=sc.games.length?"Add review counts for at least two games to see where your competitors sit on price and popularity.":
+      "Your competitors appear here as you log them.";
+    box.appendChild(p);return;
+  }
+  /* drawn at the container's own width so text stays at true size; narrow phones scroll */
+  const W=Math.max(300,Math.min(560,Math.round(box.clientWidth||540))),H=280,L=48,R=18,T=34,B=34;
+  const xMax=Math.ceil(Math.max(70,sc.myPrice,...pts.map(g=>g.price))/10)*10;
+  const lo=Math.floor(Math.log10(Math.min(...pts.map(g=>g.reviews))));
+  let hi=Math.ceil(Math.log10(Math.max(...pts.map(g=>g.reviews))));
+  if(hi<=lo)hi=lo+1;
+  const X=v=>L+(W-L-R)*v/xMax, Y=v=>T+(H-T-B)*(1-(Math.log10(v)-lo)/(hi-lo));
+  const NS="http://www.w3.org/2000/svg";
+  const svg=document.createElementNS(NS,"svg");
+  svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.setAttribute("width",W);svg.setAttribute("height",H);svg.setAttribute("role","img");
+  svg.setAttribute("aria-label","Positioning map of "+pts.length+" competitors by price and store reviews; the table below lists every value.");
+  const add=(tag,attrs,text)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);
+    if(text!=null)e.textContent=text;svg.appendChild(e);return e};
+  const tick={"font-size":11,fill:"#6B6B6B","font-family":"Inter, sans-serif"};
+  for(let k=lo;k<=hi;k++){const y=Y(Math.pow(10,k));
+    add("line",{x1:L,x2:W-R,y1:y,y2:y,stroke:"#E5DFD3","stroke-width":1});
+    add("text",{...tick,x:L-8,y:y+4,"text-anchor":"end"},shortCount(Math.pow(10,k)));}
+  const step=xMax>100?20:10;
+  for(let v=0;v<=xMax;v+=step)add("text",{...tick,x:X(v),y:H-B+18,"text-anchor":"middle"},v===0?"Free":"$"+v);
+  /* your price: a gold reference line, labelled at its top */
+  const xp=X(sc.myPrice), yourLabel=sc.myPrice?"Your price $"+sc.myPrice:"Your price: free", yw=yourLabel.length*6.4;
+  const onRight=xp+6+yw<W-R;
+  add("line",{x1:xp,x2:xp,y1:T-10,y2:H-B,stroke:"#A9802A","stroke-width":2});   /* chart steps of the brand gold/forest, validated for contrast + CVD */
+  add("text",{x:onRight?xp+6:xp-6,y:T-14,"text-anchor":onRight?"start":"end","font-size":11.5,"font-weight":600,
+    fill:"#2B2B2B","font-family":"Inter, sans-serif",stroke:"#FFFFFF","stroke-width":3,"stroke-linejoin":"round","paint-order":"stroke"},yourLabel);
+  const boxes=[{x:onRight?xp+6:xp-6-yw,y:T-26,w:yw,h:15}];
+  const pos=pts.map(g=>({g,x:X(g.price),y:Y(g.reviews)}));
+  const dots=pos.map(p=>add("circle",{cx:p.x,cy:p.y,r:5,fill:"#1F7A55",stroke:"#FFFFFF","stroke-width":2}));
+  /* direct labels where they fit; the tooltip and table carry the rest */
+  pos.forEach(p=>{
+    const label=p.g.name.length>18?p.g.name.slice(0,17)+"…":p.g.name, w=label.length*6.3+2, h=13;
+    const cands=[[p.x+9,p.y+4,"start",p.x+9,p.y-8],[p.x-9,p.y+4,"end",p.x-9-w,p.y-8],
+                 [p.x,p.y-11,"middle",p.x-w/2,p.y-22],[p.x,p.y+20,"middle",p.x-w/2,p.y+9]];
+    for(const [tx,ty,anchor,bx,by] of cands){
+      const bb={x:bx,y:by,w,h};
+      if(bb.x<L||bb.x+w>W-2||bb.y<2||bb.y+h>H-B)continue;
+      if(boxes.some(o=>bb.x<o.x+o.w&&bb.x+w>o.x&&bb.y<o.y+o.h&&bb.y+h>o.y))continue;
+      if(pos.some(q=>q!==p&&q.x>bb.x-5&&q.x<bb.x+w+5&&q.y>bb.y-5&&q.y<bb.y+h+5))continue;
+      boxes.push(bb);
+      /* a white halo keeps the label legible where it crosses a gridline or the price line */
+      add("text",{x:tx,y:ty,"text-anchor":anchor,"font-size":11.5,fill:"#2B2B2B","font-family":"Inter, sans-serif",
+        stroke:"#FFFFFF","stroke-width":3,"stroke-linejoin":"round","paint-order":"stroke"},label);
+      break;
+    }
+  });
+  const tip=document.createElement("div");tip.className="tip";tip.hidden=true;
+  pos.forEach((p,i)=>{
+    const hit=add("circle",{cx:p.x,cy:p.y,r:13,fill:"transparent",class:"hit",tabindex:"0",
+      "aria-label":p.g.name+": "+priceText(p.g)+", "+fmtK(p.g.reviews)+" reviews"});
+    const show=()=>{
+      const k=svg.getBoundingClientRect().width/W;
+      tip.textContent="";
+      const s=document.createElement("strong");s.textContent=fmtK(p.g.reviews)+" reviews · "+priceText(p.g);
+      const d=document.createElement("div");
+      d.textContent=p.g.name+" — "+SIM_LABEL[p.g.sim].toLowerCase()+", "+MODEL_LABEL[p.g.model].toLowerCase()+(p.g.year?", "+p.g.year:"");
+      tip.append(s,d);
+      tip.classList.toggle("below",p.y*k<64);
+      tip.hidden=false;
+      const tw=tip.offsetWidth;                            /* centre on the dot, but never past the map's edges */
+      tip.style.left=Math.max(2,Math.min(box.scrollWidth-tw-2,p.x*k-tw/2))+"px";
+      tip.style.top=(p.y*k)+"px";dots[i].setAttribute("r","6.5");
+    };
+    const hide=()=>{tip.hidden=true;dots[i].setAttribute("r","5")};
+    hit.addEventListener("pointerenter",show);hit.addEventListener("pointerleave",hide);
+    hit.addEventListener("focus",show);hit.addEventListener("blur",hide);
+  });
+  box.append(svg,tip);
+}
+function scRenderActions(t){
+  const b=$("sc-to-sim"), n=sc.games.length;
+  $("sc-copy").hidden=!n;
+  b.hidden=true;
+  if(!n)return;
+  if(t.f2pShare>=0.6){b.textContent="Try free-to-play in the Studio Simulator →";b.dataset.mode="f2p";b.hidden=false}
+  else if(t.med!=null){const p=Math.min(70,Math.max(1,Math.round(t.med)));
+    b.textContent="Try the $"+p+" median price in the Simulator →";b.dataset.mode="premium";b.dataset.price=p;b.hidden=false}
+}
+function scRender(){
+  $("o-sc-myprice").textContent=sc.myPrice?"$"+sc.myPrice:"Free";
+  scRenderLinks();scRenderClock();
+  const r=scScore(), t=scRenderTiles();
+  scRenderMeter(r);
+  const n=sc.games.length;
+  $("sc-verdict").innerHTML=r?scVerdict(r):n?"<strong>"+n+" of 5 found.</strong> Keep going — the test is how long five takes. "+
+    "If you truly cannot find five, press <em>I can't find five</em>: that is a result too.":
+    "Log the similar games you find, and the verdict appears here.";
+  scDrawMap();scRenderTable();scRenderActions(t);
+  $("sc-giveup").disabled=n>=5;
+}
+
+$("sc-kw").value=sc.kw;$("sc-myprice").value=sc.myPrice;
+$("sc-kw").addEventListener("input",()=>{sc.kw=$("sc-kw").value;scRenderLinks();scSave()});
+$("sc-myprice").addEventListener("input",()=>{sc.myPrice=+$("sc-myprice").value;
+  $("o-sc-myprice").textContent=sc.myPrice?"$"+sc.myPrice:"Free";scSave();scDrawMap()});
+$("sc-start").addEventListener("click",scStart);
+/* the map measures its container, so redraw when the tab becomes visible or the window resizes */
+document.addEventListener("tabshown",e=>{if(e.detail==="scanner")scDrawMap()});
+let scRz=null;
+window.addEventListener("resize",()=>{clearTimeout(scRz);
+  scRz=setTimeout(()=>{if($("scanner").classList.contains("active"))scDrawMap()},150)});
+$("sc-giveup").addEventListener("click",()=>{if(sc.games.length>=5)return;scStop();sc.gaveUp=true;scSave();scRender()});
+$("sc-model").addEventListener("change",()=>{
+  const f2p=$("sc-model").value==="f2p";$("sc-price").disabled=f2p;
+  if(f2p)$("sc-price").value="0";else if($("sc-price").value==="0")$("sc-price").value="";
+});
+$("sc-form").addEventListener("submit",e=>{
+  e.preventDefault();
+  const err=$("sc-err"), name=$("sc-name").value.trim(), model=$("sc-model").value;
+  const price=model==="f2p"?0:parseFloat($("sc-price").value);
+  const reviews=$("sc-reviews").value===""?null:Math.round(+$("sc-reviews").value);
+  const year=$("sc-year").value===""?null:Math.round(+$("sc-year").value);
+  if(!name){err.textContent="Add the game's title.";$("sc-name").focus();return}
+  if(!(price>=0&&price<=200)){err.textContent="Add its price in US dollars (0–200).";$("sc-price").focus();return}
+  if(reviews!=null&&!(reviews>=0)){err.textContent="Reviews must be zero or more.";$("sc-reviews").focus();return}
+  if(year!=null&&!(year>=1970&&year<=THIS_YEAR+1)){err.textContent="Release year should be between 1970 and "+(THIS_YEAR+1)+".";$("sc-year").focus();return}
+  if(sc.games.length>=12){err.textContent="Twelve games is the limit here — that is plenty for the test.";return}
+  err.textContent="";
+  sc.games.push({name,sim:$("sc-sim").value,model,price:Math.round(price*100)/100,reviews,year,
+    foundAt:sc.clockUsed?Math.round(scElapsed()):null});
+  if(sc.games.length>=5){scStop();sc.gaveUp=false}           /* the fifth game stops the clock */
+  $("sc-name").value="";$("sc-reviews").value="";$("sc-year").value="";if(model!=="f2p")$("sc-price").value="";
+  $("sc-name").focus();
+  scSave();scRender();
+});
+$("sc-reset").addEventListener("click",()=>{
+  if(!confirm("Clear your keywords, logged games and the clock?"))return;
+  scStop();
+  sc={kw:"",myPrice:sc.myPrice,games:[],elapsed:0,clockUsed:false,gaveUp:false,running:false,startedAt:null};
+  $("sc-kw").value="";scSave();scRender();
+});
+$("sc-to-sim").addEventListener("click",()=>{
+  const b=$("sc-to-sim");
+  if(b.dataset.mode==="premium"){$("price").value=b.dataset.price;setMode("premium")}else setMode("f2p");
+  showTab("simulator");try{history.replaceState(null,"","#simulator")}catch(e){}
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+$("sc-copy").addEventListener("click",async()=>{
+  const r=scScore(), t=scRenderTiles(), n=sc.games.length, t5=scT5();
+  const lines=["Market scan"+(sc.kw.trim()?" — “"+sc.kw.trim()+"”":"")];
+  if(r)lines.push((n>=5?(t5!=null?"Five similar games found in "+fmtDur(t5):"Five similar games found (untimed)"):
+    "Stopped after "+n+" similar game"+(n===1?"":"s"))+" → "+tierName(r.score)+" ("+r.score+"/100)");
+  sc.games.forEach((g,i)=>lines.push((i+1)+". "+g.name+" — "+SIM_LABEL[g.sim].toLowerCase()+" · "+
+    MODEL_LABEL[g.model].toLowerCase()+(g.model==="f2p"?"":" "+priceText(g))+
+    (g.reviews!=null?" · "+fmtK(g.reviews)+" reviews":"")+(g.year?" · "+g.year:"")));
+  lines.push("Median premium price: "+(t.med==null?"n/a":fmtPrice(Math.round(t.med*100)/100))+
+    " · Free-to-play share: "+Math.round(100*t.f2pShare)+"%");
+  lines.push("My planned price: "+(sc.myPrice?"$"+sc.myPrice:"free-to-play"));
+  lines.push("— EconS 329 Game Studio Toolkit");
+  const text=lines.join("\n");
+  let ok=false;
+  try{await navigator.clipboard.writeText(text);ok=true}catch(e){
+    const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";
+    document.body.appendChild(ta);ta.select();try{ok=document.execCommand("copy")}catch(e2){}ta.remove();
+  }
+  const c=$("sc-copy");c.textContent=ok?"Copied ✓":"Copy failed — select the table instead";
+  setTimeout(()=>{c.textContent="Copy summary"},1800);
+});
+scRender();
 </script>
 </body>
 </html>
