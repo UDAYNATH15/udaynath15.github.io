@@ -149,7 +149,7 @@
   .ve-hero{border-radius:12px;padding:16px 18px;margin-bottom:14px;border:1px solid var(--line);background:var(--white)}
   .ve-hero .pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
     padding:3px 10px;border-radius:12px;color:#fff;background:var(--muted)}
-  .ve-hero .big{font-size:42px;font-weight:700;line-height:1.1;margin-top:8px;font-variant-numeric:tabular-nums;color:var(--forest)}
+  .ve-hero .big{font-size:42px;font-weight:700;line-height:1.1;margin-top:8px;color:var(--forest)}
   .ve-hero .big small{font-size:15px;font-weight:600;color:var(--muted);margin-left:8px}
   .ve-hero .sub2{font-size:13px;color:var(--muted);margin-top:4px}
   @media(max-width:480px){.ve-hero .big small{display:block;margin:4px 0 0;line-height:1.3}}
@@ -170,11 +170,12 @@
   .flow-row{display:grid;grid-template-columns:34px 1fr 42px;align-items:center;gap:10px;margin:8px 0;font-size:13px}
   .flow-row .lbl{font-weight:700}
   .flow-row .val{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
-  .flow-track{height:18px;background:#F1ECE2;border-radius:9px;overflow:hidden;display:flex}
+  .flow-track{height:16px;background:#F1ECE2;border-radius:4px;display:flex}
   .flow-track span{height:100%;transition:width .3s}
   .seg-in{background:#1F7A55}
-  .seg-rep{background:var(--bad)}
-  .seg-des{background:#C98A6E}
+  .seg-rep{background:#A9802A}
+  .seg-des{background:#9C3A2E}
+  .seg-in,.seg-des{border-radius:0 4px 4px 0}
   .flow-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin-top:4px}
   .flow-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
   .flow-net{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:13.5px}
@@ -187,6 +188,25 @@
   table.cash tr.final td{font-weight:700;background:var(--cream)}
   .ve-wrap{position:relative;overflow-x:auto}
   .ve-wrap svg{display:block}
+  .ve-wrap svg:focus{outline:none}
+  .ve-wrap svg:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+  .ve-tip-row{display:flex;align-items:center;gap:6px;margin-top:3px;font-size:12px;color:#E9E4DA}
+  .ve-tip-row i{display:inline-block;width:12px;height:3px;border-radius:2px;flex:none}
+  .ve-tip-row b{color:var(--cream);font-weight:700;font-variant-numeric:tabular-nums}
+  .ve-explore{margin-top:30px}
+  .ve-explore>h2{font-size:22px;margin-bottom:4px}
+  .ve-explore>.lede{color:var(--muted);font-size:14.5px;max-width:700px;margin-bottom:14px}
+  .ve-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:820px){.ve-grid{grid-template-columns:1fr}}
+  .ve-grid>.chart-box{min-width:0}
+  .ve-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin:0 0 8px}
+  .ve-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+  .ve-scale{margin-top:10px}
+  .ve-scale .bar{height:10px;border-radius:3px}
+  .ve-scale-ticks{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-top:3px}
+  details.ve-data{margin-top:14px;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+  details.ve-data summary{cursor:pointer;color:var(--forest);font-weight:600;font-size:14px}
+  table.map-table th,table.map-table td{padding:4px 6px;font-size:12px}
   /* About */
   .about p{max-width:680px;margin-bottom:14px;font-size:15px}
   footer{border-top:1px solid var(--line);margin-top:36px;padding:20px 0 30px;font-size:13px;color:var(--muted)}
@@ -452,9 +472,8 @@
       <div class="verdict" id="ve-verdict" aria-live="polite"></div>
       <div class="chart-box">
         <h3>Price level over the first year</h3>
-        <div class="sub">Launch prices = 100 (dashed line). The shaded band is ±10%: a stable economy.</div>
+        <div class="sub">Launch prices = 100 (the darker line). The shaded band is ±10%: a stable economy. Hover or use the arrow keys to read any month.</div>
         <div class="ve-wrap" id="ve-chart"></div>
-        <div class="table-scroll"><table class="cash" id="ve-table"></table></div>
       </div>
       <div class="econ-note"><strong>The economics you're using:</strong> when more coins chase the same goods, prices rise. That is the
         <strong>quantity theory of money</strong> (MV = PQ) from Lesson 3.1. EVE Online's developer publishes a <strong>Monthly Economic
@@ -468,6 +487,42 @@
         </details>
       </div>
     </div>
+  </div>
+
+  <div class="ve-explore">
+    <h2>Inside your economy, month by month</h2>
+    <p class="lede">Every chart updates as you move the sliders. Hover, tap or use the arrow keys to read exact values, and click the
+    balance map to try a different mix.</p>
+    <div class="ve-grid">
+      <div class="chart-box">
+        <h3>Coins in and out each month</h3>
+        <div class="sub">All players combined. Faucets add coins above the line; sinks remove them below it.</div>
+        <div class="ve-legend"><span><i style="background:#1F7A55"></i>quests, loot, rewards</span><span><i style="background:#A9802A"></i>repairs, fees, taxes</span><span><i style="background:#9C3A2E"></i>items destroyed or used up</span></div>
+        <div class="ve-wrap" id="ve-flows"></div>
+      </div>
+      <div class="chart-box">
+        <h3>Monthly inflation</h3>
+        <div class="sub">How much prices change from one month to the next.</div>
+        <div class="ve-legend"><span><i style="background:#e34948"></i>prices rising</span><span><i style="background:#2a78d6"></i>prices falling</span></div>
+        <div class="ve-wrap" id="ve-infl"></div>
+      </div>
+      <div class="chart-box">
+        <h3>Coins in circulation</h3>
+        <div class="sub">The money supply: every coin held by every player.</div>
+        <div class="ve-wrap" id="ve-money"></div>
+      </div>
+      <div class="chart-box">
+        <h3>Balance map around your game</h3>
+        <div class="sub">Prices after 12 months if you shift coins in (across) or coins out (up) by up to 30 a day. The gray diagonal is where they balance; the ring is your game. Click a cell to try it.</div>
+        <div class="ve-wrap" id="ve-map"></div>
+        <div class="ve-scale"><div class="bar" id="ve-scale-bar"></div>
+          <div class="ve-scale-ticks"><span>−75%</span><span>−50%</span><span>stable</span><span>+100%</span><span>+300%</span></div></div>
+      </div>
+    </div>
+    <details class="ve-data"><summary>See every month as a table</summary>
+      <div class="table-scroll"><table class="cash" id="ve-table"></table></div></details>
+    <details class="ve-data"><summary>See the balance map as a table</summary>
+      <div class="table-scroll"><table class="cash map-table" id="ve-map-table"></table></div></details>
   </div>
 </section>
 
@@ -1064,24 +1119,31 @@ const VE_PRESETS={
   taxed:   {players:10000,growth:0,start:5000,faucet:120,repair:95,destroy:30}
 };
 const VE_IDS=["players","growth","start","faucet","repair","destroy"];
-const veShort=v=>{const a=Math.abs(v);return a>=1e9?(v/1e9).toFixed(1)+"B":a>=1e6?(v/1e6).toFixed(1)+"M":a>=1e4?Math.round(v/1e3)+"K":fmtK(v)};
+const veShort=v=>{const a=Math.abs(v),t=x=>x.toFixed(1).replace(/\.0$/,"");return a>=1e9?t(v/1e9)+"B":a>=1e6?t(v/1e6)+"M":a>=1e4?Math.round(v/1e3)+"K":fmtK(v)};
+const vePct=v=>v==null?"—":(v>0.0005?"+":v<-0.0005?"−":"")+Math.abs(v*100).toFixed(Math.abs(v)<0.1?1:0)+"%";
 function veRead(){const o={};VE_IDS.forEach(k=>o[k]=+$("ve-"+k).value);return o}
+/* chart colours, checked with the dataviz palette validator on white: coins in / repairs / destroyed pass the CVD (8.8)
+   and normal-vision (17.4) floors; the diverging poles (prices falling blue, rising red) pass at 21.6 */
+const VE_COL={in:"#1F7A55",rep:"#A9802A",des:"#9C3A2E",money:"#1F4E3D",up:"#e34948",down:"#2a78d6",mid:"#f0efec",
+  ink:"#2B2B2B",muted:"#6B6B6B",grid:"#E5DFD3",axis:"#C3BDAF"};
 /* monthly steps: every player earns the faucets and pays the sinks for 30 days; prices follow coins per player (P ∝ M/players) */
 function veModel(x){
-  const net=x.faucet-x.repair-x.destroy;
+  const sinks=x.repair+x.destroy, shareRep=sinks?x.repair/sinks:0;
   let n=x.players,c=x.start,brokeAt=null;
-  const rows=[{m:0,n,c}];
+  const rows=[{m:0,n,c,inflow:0,outRep:0,outDes:0}];
   for(let t=1;t<=12;t++){
-    const n2=Math.max(1,n*(1+x.growth/100));
-    let c2=c+net*30;
-    if(c2<0){c2=0;if(brokeAt==null)brokeAt=t}
-    if(n2>n)c2=(n*c2+(n2-n)*x.start)/n2;              /* newcomers arrive holding the starting coins */
-    n=n2;c=c2;rows.push({m:t,n,c});
+    const n2=Math.max(1,n*(1+x.growth/100)), earned=x.faucet*30, owed=sinks*30, avail=c+earned;
+    const paid=Math.min(owed,avail);                        /* nobody can pay more than they hold */
+    if(owed>avail&&brokeAt==null)brokeAt=t;
+    const row={m:t,inflow:n*earned,outRep:n*paid*shareRep,outDes:n*paid*(1-shareRep)};
+    let c2=avail-paid;
+    if(n2>n)c2=(n*c2+(n2-n)*x.start)/n2;                   /* newcomers arrive holding the starting coins */
+    n=n2;c=c2;row.n=n;row.c=c;rows.push(row);
   }
-  rows.forEach(r=>{r.M=r.n*r.c;r.P=100*r.c/x.start});
-  return {net,rows,brokeAt};
+  rows.forEach((r,i)=>{r.M=r.n*r.c;r.P=100*r.c/x.start;r.infl=i&&rows[i-1].c>0?r.c/rows[i-1].c-1:null});
+  return {rows,brokeAt};
 }
-/* one classification drives the badge, the verdict colour and the chart colour */
+/* one classification drives the badge, the verdict colour and the price-line colour */
 const VE_STATES={
   none:     {label:"No coins moving",color:"#6B6B6B"},
   broke:    {label:"Players run out of coins",color:"#9C3A2E"},
@@ -1121,50 +1183,265 @@ function veVerdict(x,r,chg,st){
   if(x.growth>0&&chg>0.10)extras.push("Player growth of "+x.growth+"% a month softens the inflation, because newcomers start with fewer coins than veterans.");
   return V[st]+(extras.length?'<span style="display:block;margin-top:8px">'+extras.join(" ")+"</span>":"");
 }
-function veDraw(r,st){
-  const box=$("ve-chart");box.textContent="";
-  /* drawn at the container's own width so text stays at true size; narrow phones scroll */
-  const W=Math.max(300,Math.min(560,Math.round(box.clientWidth||540))),H=250,L=46,R=50,T=16,B=30;
-  const col=VE_STATES[st].color, Ps=r.rows.map(q=>q.P);
-  let lo=Math.min(90,...Ps),hi=Math.max(110,...Ps);
-  const raw=(hi-lo)/5,mag=Math.pow(10,Math.floor(Math.log10(raw)));
-  const step=[1,2,2.5,5,10].find(k=>k*mag>=raw)*mag;
-  lo=Math.max(0,Math.floor(lo/step)*step);hi=Math.ceil(hi/step)*step;
+
+/* ----- chart helpers: every chart is drawn at its container's width, with a hover + keyboard readout ----- */
+const VE_NS="http://www.w3.org/2000/svg", VE_TICK={"font-size":11,fill:"#6B6B6B","font-family":"Inter, sans-serif"};
+const VE_HALO={stroke:"#FFFFFF","stroke-width":3,"stroke-linejoin":"round","paint-order":"stroke"};
+function veSvg(id,H,label,forceW){
+  const box=$(id);box.textContent="";
+  const W=forceW||Math.max(300,Math.min(560,Math.round(box.clientWidth||480)));
+  const svg=document.createElementNS(VE_NS,"svg");
+  svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.setAttribute("width",W);svg.setAttribute("height",H);
+  svg.setAttribute("role","img");svg.setAttribute("aria-label",label);svg.setAttribute("tabindex","0");
+  const add=(tag,attrs,text,parent)=>{const e=document.createElementNS(VE_NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);
+    if(text!=null)e.textContent=text;(parent||svg).appendChild(e);return e};
+  const tip=document.createElement("div");tip.className="tip";tip.hidden=true;
+  box.append(svg,tip);
+  return {box,W,svg,add,tip};
+}
+function veNice(lo,hi,n){
+  if(hi-lo<1e-9)hi=lo+1;
+  const raw=(hi-lo)/n,mag=Math.pow(10,Math.floor(Math.log10(raw)));
+  const step=[1,2,2.5,5,10].find(k=>k*mag>=raw-1e-12)*mag;
+  return {lo:Math.floor(lo/step+1e-9)*step,hi:Math.ceil(hi/step-1e-9)*step,step};
+}
+/* a bar with a 4px rounded data end and a square base: y0 is the baseline, y1 the data end */
+function veBar(x,y0,y1,w,r){
+  const h=Math.abs(y1-y0);if(h<0.5)return "M0 0";r=Math.min(r,h,w/2);
+  const s=y1<y0?1:-1;
+  return "M"+x+" "+y0+"V"+(y1+s*r)+"Q"+x+" "+y1+" "+(x+r)+" "+y1+"H"+(x+w-r)+"Q"+(x+w)+" "+y1+" "+(x+w)+" "+(y1+s*r)+"V"+y0+"Z";
+}
+/* the tooltip: the value leads, labels follow, series keyed by a short line in their colour (all text via textContent) */
+function veTip(c,x,y,head,rows){
+  const {tip,svg,W,box}=c;tip.textContent="";
+  const s=document.createElement("strong");s.textContent=head;tip.appendChild(s);
+  (rows||[]).forEach(([col,val,lab])=>{
+    const d=document.createElement("div");d.className="ve-tip-row";
+    if(col){const k=document.createElement("i");k.style.background=col;d.appendChild(k)}
+    if(val){const b=document.createElement("b");b.textContent=val;d.appendChild(b)}
+    if(lab)d.appendChild(document.createTextNode(lab));
+    tip.appendChild(d);
+  });
+  const k=svg.getBoundingClientRect().width/W;
+  tip.classList.toggle("below",y*k<86);
+  tip.hidden=false;
+  const tw=tip.offsetWidth;
+  tip.style.left=Math.max(2,Math.min(box.scrollWidth-tw-2,x*k-tw/2))+"px";
+  tip.style.top=(y*k)+"px";
+}
+/* pointer or arrow keys pick a month; the same readout appears either way */
+function veHover(c,indexAt,first,last,show,hide){
+  const {svg,W}=c;let cur=null;
+  const off=()=>{hide();c.tip.hidden=true};
+  svg.addEventListener("pointermove",e=>{const b=svg.getBoundingClientRect();const i=indexAt((e.clientX-b.left)*W/b.width);
+    if(i!==cur){cur=i;show(i)}});
+  svg.addEventListener("pointerleave",()=>{cur=null;off()});
+  svg.addEventListener("focus",()=>{if(cur==null)cur=first;show(cur)});
+  svg.addEventListener("blur",()=>{cur=null;off()});
+  svg.addEventListener("keydown",e=>{const d={ArrowRight:1,ArrowLeft:-1}[e.key];if(!d)return;
+    e.preventDefault();cur=Math.max(first,Math.min(last,(cur==null?first:cur)+d));show(cur)});
+}
+/* diverging scale for price change: blue (falling) - neutral gray (stable) - red (rising), mixed in OKLab and
+   scaled by the price ratio, so halving and doubling look equally strong (full colour at ÷4 or ×4) */
+const veLin=v=>{v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4)};
+const veGam=v=>Math.round(255*Math.max(0,Math.min(1,v<=0.0031308?12.92*v:1.055*Math.pow(v,1/2.4)-0.055)));
+function veLab(hex){const n=parseInt(hex.slice(1),16),r=veLin(n>>16),g=veLin(n>>8&255),b=veLin(n&255);
+  const l=Math.cbrt(0.4122214708*r+0.5363325363*g+0.0514459929*b),m=Math.cbrt(0.2119034982*r+0.6806995451*g+0.1073969566*b),
+    s=Math.cbrt(0.0883024619*r+0.2817188376*g+0.6299787005*b);
+  return [0.2104542553*l+0.7936177850*m-0.0040720468*s,1.9779984951*l-2.4285922050*m+0.4505937099*s,0.0259040371*l+0.7827717662*m-0.8086757660*s]}
+function veRgb([L,a,b]){const l=Math.pow(L+0.3963377774*a+0.2158037573*b,3),m=Math.pow(L-0.1055613458*a-0.0638541728*b,3),
+    s=Math.pow(L-0.0894841775*a-1.2914855480*b,3);
+  return "rgb("+veGam(4.0767416621*l-3.3077115913*m+0.2309699292*s)+","+veGam(-1.2684380046*l+2.6097574011*m-0.3413193965*s)+","+
+    veGam(-0.0041960863*l-0.7034186147*m+1.7076147010*s)+")"}
+const VE_LAB={mid:veLab(VE_COL.mid),up:veLab(VE_COL.up),down:veLab(VE_COL.down)};
+function veDiv(chg){
+  const t=chg<=-1?-1:Math.max(-1,Math.min(1,Math.log2(1+chg)/2)), p=t<0?VE_LAB.down:VE_LAB.up, k=Math.abs(t);
+  return veRgb(VE_LAB.mid.map((v,i)=>v+(p[i]-v)*k));
+}
+
+/* ----- the price level (a line over the ±10% stable zone) ----- */
+function vePrice(r,st){
+  const H=250,L=46,R=52,T=16,B=30, col=VE_STATES[st].color, Ps=r.rows.map(q=>q.P);
+  const c=veSvg("ve-chart",H,"Price level over 12 months, from 100 at launch to "+Math.round(Ps[12])+". Arrow keys read each month.");
+  const {W,add}=c, ns=veNice(Math.min(90,...Ps),Math.max(110,...Ps),5), lo=Math.max(0,ns.lo), hi=ns.hi;
   const X=m=>L+(W-L-R)*m/12, Y=v=>T+(H-T-B)*(1-(v-lo)/(hi-lo));
-  const NS="http://www.w3.org/2000/svg";
-  const svg=document.createElementNS(NS,"svg");
-  svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.setAttribute("width",W);svg.setAttribute("height",H);svg.setAttribute("role","img");
-  svg.setAttribute("aria-label","Price level over 12 months, from 100 at launch to "+Math.round(Ps[12])+" ("+VE_STATES[st].label.toLowerCase()+"); the table below lists the values.");
-  const add=(tag,attrs,text)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);
-    if(text!=null)e.textContent=text;svg.appendChild(e);return e};
-  const tick={"font-size":11,fill:"#6B6B6B","font-family":"Inter, sans-serif"};
-  /* the ±10% stable zone */
   const b1=Y(Math.min(hi,110)),b2=Y(Math.max(lo,90));
   add("rect",{x:L,y:b1,width:W-L-R,height:Math.max(0,b2-b1),fill:"#1F7A55","fill-opacity":0.07});
-  for(let v=lo;v<=hi+1e-9;v+=step){const y=Y(v);
-    add("line",{x1:L,x2:W-R,y1:y,y2:y,stroke:"#E5DFD3","stroke-width":1});
-    add("text",{...tick,x:L-8,y:y+4,"text-anchor":"end"},fmtK(v));}
-  if(b2-b1>16)add("text",{x:W-R-6,y:b1+12,"text-anchor":"end","font-size":10.5,"font-weight":600,fill:"#1F7A55",
-    "font-family":"Inter, sans-serif",stroke:"#FFFFFF","stroke-width":3,"stroke-linejoin":"round","paint-order":"stroke"},"stable zone ±10%");
-  add("line",{x1:L,x2:W-R,y1:Y(100),y2:Y(100),stroke:"#8A8A8A","stroke-width":1.2,"stroke-dasharray":"5 4"});
-  [0,3,6,9,12].forEach(m=>add("text",{...tick,x:X(m),y:H-B+18,"text-anchor":"middle"},m?m+" mo":"Launch"));
-  /* shade the gap between the price line and launch prices, in the verdict's colour */
+  for(let v=lo;v<=hi+1e-9;v+=ns.step){const y=Y(v);
+    add("line",{x1:L,x2:W-R,y1:y,y2:y,stroke:VE_COL.grid,"stroke-width":1});
+    add("text",{...VE_TICK,x:L-8,y:y+4,"text-anchor":"end"},fmtK(v));}
+  add("line",{x1:L,x2:W-R,y1:Y(100),y2:Y(100),stroke:VE_COL.axis,"stroke-width":1.5});
+  if(b2-b1>16)add("text",{x:W-R-6,y:b1+12,"text-anchor":"end","font-size":10.5,"font-weight":600,fill:VE_COL.muted,
+    "font-family":"Inter, sans-serif",...VE_HALO},"stable zone ±10%");
+  [0,3,6,9,12].forEach(m=>add("text",{...VE_TICK,x:X(m),y:H-B+18,"text-anchor":"middle"},m?m+" mo":"Launch"));
   const pts=Ps.map((p,i)=>X(i).toFixed(1)+" "+Y(p).toFixed(1));
-  add("path",{d:"M"+X(0)+" "+Y(100)+" L"+pts.join(" L")+" L"+X(12)+" "+Y(100)+" Z",fill:col,"fill-opacity":0.13});
-  add("path",{d:"M"+pts.join(" L"),fill:"none",stroke:col,"stroke-width":2.75,"stroke-linejoin":"round","stroke-linecap":"round"});
-  Ps.forEach((p,i)=>{
-    const c=add("circle",{cx:X(i),cy:Y(p),r:i===12?5:3,fill:col,stroke:"#FFFFFF","stroke-width":1.5});
-    const t=document.createElementNS(NS,"title");t.textContent=(i?"Month "+i:"Launch")+": price index "+Math.round(p);c.appendChild(t);
+  add("path",{d:"M"+X(0)+" "+Y(100)+"L"+pts.join("L")+"L"+X(12)+" "+Y(100)+"Z",fill:col,"fill-opacity":0.10});
+  add("path",{d:"M"+pts.join("L"),fill:"none",stroke:col,"stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"});
+  add("circle",{cx:X(12),cy:Y(Ps[12]),r:4.5,fill:col,stroke:"#FFFFFF","stroke-width":2});
+  add("text",{x:X(12)+10,y:Y(Ps[12])+4,"font-size":12.5,"font-weight":700,fill:VE_COL.ink,"font-family":"Inter, sans-serif"},fmtK(Ps[12]));
+  const cross=add("line",{x1:0,x2:0,y1:T,y2:H-B,stroke:VE_COL.ink,"stroke-width":1,opacity:0});
+  const dot=add("circle",{cx:0,cy:0,r:4.5,fill:col,stroke:"#FFFFFF","stroke-width":2,opacity:0});
+  veHover(c,x=>Math.max(0,Math.min(12,Math.round((x-L)/(W-L-R)*12))),0,12,i=>{
+    const q=r.rows[i];
+    cross.setAttribute("x1",X(i));cross.setAttribute("x2",X(i));cross.setAttribute("opacity",0.3);
+    dot.setAttribute("cx",X(i));dot.setAttribute("cy",Y(q.P));dot.setAttribute("opacity",1);
+    veTip(c,X(i),Y(q.P),fmtK(q.P)+" price index",[[null,i?"Month "+i:"Launch",""],[null,fmtK(q.c)," coins per player"]]
+      .concat(i?[[null,vePct(q.infl)," vs. the month before"]]:[]));
+  },()=>{cross.setAttribute("opacity",0);dot.setAttribute("opacity",0)});
+}
+
+/* ----- coins in and out each month (faucets up, sinks stacked down) ----- */
+function veFlows(r){
+  const H=260,L=52,R=10,T=12,B=28, rows=r.rows.slice(1);
+  const c=veSvg("ve-flows",H,"Coins in and out each month for all players combined; the data table lists every value. Arrow keys read each month.");
+  const {W,add}=c;
+  const top=Math.max(0,...rows.map(q=>q.inflow)), bot=Math.max(0,...rows.map(q=>q.outRep+q.outDes));
+  const ns=veNice(-(bot||top||1),top||bot||1,4), lo=ns.lo, hi=ns.hi;
+  const band=(W-L-R)/12, bw=Math.min(24,band-6);
+  const Y=v=>T+(H-T-B)*(1-(v-lo)/(hi-lo)), X=i=>L+band*(i-1)+(band-bw)/2, y0=Y(0);
+  for(let v=lo;v<=hi+1e-9;v+=ns.step){const y=Y(v);
+    if(Math.abs(v)>1e-9)add("line",{x1:L,x2:W-R,y1:y,y2:y,stroke:VE_COL.grid,"stroke-width":1});
+    add("text",{...VE_TICK,x:L-8,y:y+4,"text-anchor":"end"},(v>1e-9?"+":v<-1e-9?"−":"")+veShort(Math.abs(v)));}
+  [1,3,6,9,12].forEach(m=>add("text",{...VE_TICK,x:L+band*(m-0.5),y:H-B+18,"text-anchor":"middle"},m+" mo"));
+  const groups=rows.map((q,k)=>{
+    const g=add("g",{}), x=X(k+1);
+    if(q.inflow>0)add("path",{d:veBar(x,y0-1,Y(q.inflow),bw,4),fill:VE_COL.in},null,g);
+    /* sinks stack downward: repairs next to the baseline, then items destroyed, split by a 2px surface gap */
+    const segs=[[q.outRep,VE_COL.rep],[q.outDes,VE_COL.des]].filter(s=>s[0]>0);
+    let acc=0;
+    segs.forEach(([v,col],j)=>{
+      const yA=Y(-acc)+(j?2:1), yB=Y(-(acc+v));acc+=v;
+      if(yB-yA>0.5)add("path",{d:veBar(x,yA,yB,bw,j===segs.length-1?4:0),fill:col},null,g);
+    });
+    return g;
   });
-  add("text",{x:X(12)+10,y:Y(Ps[12])+4,"font-size":13,"font-weight":700,fill:col,"font-family":"Inter, sans-serif"},fmtK(Ps[12]));
-  box.appendChild(svg);
+  add("line",{x1:L,x2:W-R,y1:y0,y2:y0,stroke:VE_COL.axis,"stroke-width":1.5});
+  veHover(c,x=>Math.max(1,Math.min(12,Math.floor((x-L)/band)+1)),1,12,i=>{
+    const q=rows[i-1], net=q.inflow-q.outRep-q.outDes;
+    groups.forEach((g,k)=>g.setAttribute("opacity",k===i-1?1:0.4));
+    veTip(c,L+band*(i-0.5),Math.min(Y(q.inflow),y0)-4,"Month "+i+": net "+(net>0?"+":net<0?"−":"")+veShort(Math.abs(net)),
+      [[VE_COL.in,"+"+veShort(q.inflow)," quests, loot, rewards"],[VE_COL.rep,"−"+veShort(q.outRep)," repairs, fees, taxes"],
+       [VE_COL.des,"−"+veShort(q.outDes)," items destroyed or used up"]]);
+  },()=>groups.forEach(g=>g.setAttribute("opacity",1)));
 }
+
+/* ----- balance map: 12-month price change for mixes of coins in and out around the current setting ----- */
+let veMapCur=null;
+function veMap(x){
+  const sinks=x.repair+x.destroy, share=sinks?x.repair/sinks:0.5, step=5, n=13;
+  const f0=Math.min(500-(n-1)*step,Math.max(0,Math.round(x.faucet/step)*step-30));
+  const s0=Math.min(500-(n-1)*step,Math.max(0,Math.round(sinks/step)*step-30));
+  const grid=[];
+  for(let j=0;j<n;j++){const row=[];for(let i=0;i<n;i++){const f=f0+i*step,s=s0+j*step;
+    row.push(veModel({...x,faucet:f,repair:s*share,destroy:s*(1-share)}).rows[12].P/100-1)}grid.push(row)}
+  const box=$("ve-map"),Wc=Math.max(300,Math.min(560,Math.round(box.clientWidth||480)));
+  const L=46,R=12,T=10,B=44, cell=Math.min(24,Math.floor((Wc-L-R)/n)), PW=cell*n, H=T+PW+B, W=L+PW+R;
+  const c=veSvg("ve-map",H,"Balance map: price change after 12 months for coins in from "+f0+" to "+(f0+(n-1)*step)+
+    " and coins out from "+s0+" to "+(s0+(n-1)*step)+" per player per day. Your game is "+x.faucet+" in and "+sinks+
+    " out. Arrow keys move, Enter tries a cell.",W);
+  const {add,svg}=c, cx=i=>L+i*cell, cy=j=>T+(n-1-j)*cell;
+  for(let j=0;j<n;j++)for(let i=0;i<n;i++)
+    add("rect",{x:cx(i)+1,y:cy(j)+1,width:cell-2,height:cell-2,rx:2,fill:veDiv(grid[j][i])});   /* 2px surface gap */
+  for(let k=0;k<n;k+=3){
+    add("text",{...VE_TICK,x:cx(k)+cell/2,y:T+PW+15,"text-anchor":"middle"},f0+k*step);
+    add("text",{...VE_TICK,x:L-7,y:cy(k)+cell/2+4,"text-anchor":"end"},s0+k*step);
+  }
+  add("text",{...VE_TICK,x:L+PW/2,y:T+PW+34,"text-anchor":"middle","font-weight":600},"Coins in per player per day →");
+  add("text",{...VE_TICK,"font-weight":600,"text-anchor":"middle",transform:"translate(12 "+(T+PW/2)+") rotate(-90)"},"Coins out per player per day →");
+  const rx=L+((x.faucet-f0)/step+0.5)*cell, ry=T+(n-1-(sinks-s0)/step+0.5)*cell;
+  add("circle",{cx:rx,cy:ry,r:8,fill:"none",stroke:"#FFFFFF","stroke-width":5});
+  add("circle",{cx:rx,cy:ry,r:8,fill:"none",stroke:VE_COL.ink,"stroke-width":2});
+  const right=rx+12+64<W;
+  add("text",{x:right?rx+13:rx-13,y:ry+4,"text-anchor":right?"start":"end","font-size":11.5,"font-weight":700,fill:VE_COL.ink,
+    "font-family":"Inter, sans-serif",...VE_HALO},"your game");
+  const hl=add("rect",{x:0,y:0,width:cell,height:cell,rx:3,fill:"none",stroke:VE_COL.ink,"stroke-width":2,opacity:0,"pointer-events":"none"});
+  const show=(i,j)=>{hl.setAttribute("x",cx(i));hl.setAttribute("y",cy(j));hl.setAttribute("opacity",1);
+    veTip(c,cx(i)+cell/2,cy(j),vePct(grid[j][i])+" prices after a year",
+      [[null,(f0+i*step)+" in · "+(s0+j*step)+" out"," per player per day"],[null,"","Click or press Enter to try it"]]);};
+  const hide=()=>{hl.setAttribute("opacity",0);c.tip.hidden=true};
+  const apply=(i,j,keep)=>{const s=s0+j*step, rep=Math.round(s*share/5)*5;
+    $("ve-faucet").value=f0+i*step;$("ve-repair").value=rep;$("ve-destroy").value=s-rep;
+    veMapCur=null;veRender();if(keep){const ns=$("ve-map").querySelector("svg");if(ns)ns.focus()}};
+  const at=e=>{const b=svg.getBoundingClientRect(),k=W/b.width,px=(e.clientX-b.left)*k,py=(e.clientY-b.top)*k;
+    const i=Math.floor((px-L)/cell),j=n-1-Math.floor((py-T)/cell);return i>=0&&i<n&&j>=0&&j<n?[i,j]:null};
+  svg.addEventListener("pointermove",e=>{const p=at(e);if(p)show(...p);else hide()});
+  svg.addEventListener("pointerleave",hide);
+  svg.addEventListener("click",e=>{const p=at(e);if(p)apply(...p,false)});
+  svg.addEventListener("focus",()=>{veMapCur=veMapCur||[Math.round((x.faucet-f0)/step),Math.round((sinks-s0)/step)];show(...veMapCur)});
+  svg.addEventListener("blur",hide);
+  svg.addEventListener("keydown",e=>{
+    if(e.key==="Enter"&&veMapCur){e.preventDefault();apply(...veMapCur,true);return}
+    const d={ArrowRight:[1,0],ArrowLeft:[-1,0],ArrowUp:[0,1],ArrowDown:[0,-1]}[e.key];if(!d)return;
+    e.preventDefault();const p=veMapCur||[6,6];
+    veMapCur=[Math.max(0,Math.min(n-1,p[0]+d[0])),Math.max(0,Math.min(n-1,p[1]+d[1]))];show(...veMapCur)});
+  /* the same grid as a table */
+  $("ve-map-table").innerHTML="<tr><th>Out ↓ / In →</th>"+Array.from({length:n},(_,i)=>"<th>"+(f0+i*step)+"</th>").join("")+"</tr>"+
+    Array.from({length:n},(_,k)=>{const j=n-1-k;return "<tr><td>"+(s0+j*step)+"</td>"+grid[j].map(v=>"<td>"+vePct(v)+"</td>").join("")+"</tr>"}).join("");
+}
+
+/* ----- coins in circulation (the money supply, an area from zero) ----- */
+function veMoney(r){
+  const H=370,L=52,R=58,T=14,B=28, Ms=r.rows.map(q=>q.M);
+  const c=veSvg("ve-money",H,"Coins in circulation over 12 months, from "+veShort(Ms[0])+" to "+veShort(Ms[12])+". Arrow keys read each month.");
+  const {W,add}=c, ns=veNice(0,Math.max(1,...Ms),4);
+  const X=m=>L+(W-L-R)*m/12, Y=v=>T+(H-T-B)*(1-v/ns.hi);
+  for(let v=0;v<=ns.hi+1e-9;v+=ns.step){const y=Y(v);
+    add("line",{x1:L,x2:W-R,y1:y,y2:y,stroke:v?VE_COL.grid:VE_COL.axis,"stroke-width":v?1:1.5});
+    add("text",{...VE_TICK,x:L-8,y:y+4,"text-anchor":"end"},veShort(v));}
+  [0,3,6,9,12].forEach(m=>add("text",{...VE_TICK,x:X(m),y:H-B+18,"text-anchor":"middle"},m?m+" mo":"Launch"));
+  const pts=Ms.map((v,i)=>X(i).toFixed(1)+" "+Y(v).toFixed(1));
+  add("path",{d:"M"+X(0)+" "+Y(0)+"L"+pts.join("L")+"L"+X(12)+" "+Y(0)+"Z",fill:VE_COL.money,"fill-opacity":0.10});
+  add("path",{d:"M"+pts.join("L"),fill:"none",stroke:VE_COL.money,"stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"});
+  add("circle",{cx:X(12),cy:Y(Ms[12]),r:4.5,fill:VE_COL.money,stroke:"#FFFFFF","stroke-width":2});
+  add("text",{x:X(12)+10,y:Y(Ms[12])+4,"font-size":12.5,"font-weight":700,fill:VE_COL.ink,"font-family":"Inter, sans-serif"},veShort(Ms[12]));
+  const cross=add("line",{x1:0,x2:0,y1:T,y2:H-B,stroke:VE_COL.ink,"stroke-width":1,opacity:0});
+  const dot=add("circle",{cx:0,cy:0,r:4.5,fill:VE_COL.money,stroke:"#FFFFFF","stroke-width":2,opacity:0});
+  veHover(c,x=>Math.max(0,Math.min(12,Math.round((x-L)/(W-L-R)*12))),0,12,i=>{
+    const q=r.rows[i];
+    cross.setAttribute("x1",X(i));cross.setAttribute("x2",X(i));cross.setAttribute("opacity",0.3);
+    dot.setAttribute("cx",X(i));dot.setAttribute("cy",Y(q.M));dot.setAttribute("opacity",1);
+    veTip(c,X(i),Y(q.M),veShort(q.M)+" coins in circulation",[[null,i?"Month "+i:"Launch",""],[null,fmtK(q.n)," players"],[null,fmtK(q.c)," coins each"]]);
+  },()=>{cross.setAttribute("opacity",0);dot.setAttribute("opacity",0)});
+}
+
+/* ----- monthly inflation (columns above or below zero) ----- */
+function veInfl(r){
+  const H=260,L=52,R=10,T=20,B=28, rows=r.rows.slice(1), vals=rows.map(q=>q.infl), fin=vals.filter(v=>v!=null);
+  const c=veSvg("ve-infl",H,"Monthly inflation: the price change from one month to the next. Arrow keys read each month.");
+  const {W,add}=c;
+  let lo=Math.min(0,...fin),hi=Math.max(0,...fin);   /* after prices reach zero there is no change left to measure */
+  if(hi-lo<0.02){lo=Math.min(lo,-0.01);hi=Math.max(hi,0.01)}
+  const ns=veNice(lo,hi,4), dec=ns.step*100<1?1:0;
+  const band=(W-L-R)/12,bw=Math.min(24,band-6), Y=v=>T+(H-T-B)*(1-(v-ns.lo)/(ns.hi-ns.lo)), X=i=>L+band*(i-1)+(band-bw)/2, y0=Y(0);
+  for(let v=ns.lo;v<=ns.hi+1e-9;v+=ns.step){const y=Y(v);
+    if(Math.abs(v)>1e-9)add("line",{x1:L,x2:W-R,y1:y,y2:y,stroke:VE_COL.grid,"stroke-width":1});
+    add("text",{...VE_TICK,x:L-8,y:y+4,"text-anchor":"end"},(v>1e-9?"+":v<-1e-9?"−":"")+Math.abs(v*100).toFixed(dec)+"%");}
+  [1,3,6,9,12].forEach(m=>add("text",{...VE_TICK,x:L+band*(m-0.5),y:H-B+18,"text-anchor":"middle"},m+" mo"));
+  const bars=vals.map((v,k)=>v==null||Math.abs(v)<0.0005?add("g",{}):
+    add("path",{d:veBar(X(k+1),v>0?y0-1:y0+1,Y(v),bw,4),fill:v>0?VE_COL.up:VE_COL.down}));
+  add("line",{x1:L,x2:W-R,y1:y0,y2:y0,stroke:VE_COL.axis,"stroke-width":1.5});
+  /* label only the largest move; the tooltip and the table carry the rest */
+  let big=-1;vals.forEach((v,k)=>{if(v!=null&&(big<0||Math.abs(v)>Math.abs(vals[big])))big=k});
+  if(big>=0&&Math.abs(vals[big])>=0.0005)add("text",{x:X(big+1)+bw/2,y:vals[big]>0?Y(vals[big])-6:Y(vals[big])+14,"text-anchor":"middle",
+    "font-size":11.5,"font-weight":700,fill:VE_COL.ink,"font-family":"Inter, sans-serif",...VE_HALO},vePct(vals[big]));
+  else add("text",{x:(L+W-R)/2,y:y0-10,"text-anchor":"middle","font-size":12,fill:VE_COL.muted,"font-family":"Inter, sans-serif"},
+    "Prices hold steady every month");
+  veHover(c,x=>Math.max(1,Math.min(12,Math.floor((x-L)/band)+1)),1,12,i=>{
+    const v=vals[i-1];bars.forEach((b,k)=>b.setAttribute("opacity",k===i-1?1:0.4));
+    veTip(c,L+band*(i-0.5),(v==null?y0:Math.min(Y(v),y0))-4,(v==null?"No prices left to compare":vePct(v)+" vs. the month before"),
+      [[null,"Month "+i,""],[null,fmtK(r.rows[i].P)," price index"]]);
+  },()=>bars.forEach(b=>b.setAttribute("opacity",1)));
+}
+
+/* ----- every month as a table (the charts' table view) ----- */
 function veTable(r){
-  $("ve-table").innerHTML="<tr><th>Month</th><th>Players</th><th>Coins per player</th><th>Coins in circulation</th><th>Price index</th></tr>"+
-    [0,3,6,9,12].map(m=>{const q=r.rows[m];
-      return "<tr"+(m===12?' class="final"':"")+"><td>"+(m?m:"Launch")+"</td><td>"+fmtK(q.n)+"</td><td>"+fmtK(q.c)+"</td><td>"+
-        veShort(q.M)+"</td><td>"+fmtK(q.P)+"</td></tr>"}).join("");
+  $("ve-table").innerHTML="<tr><th>Month</th><th>Players</th><th>Coins in</th><th>Repairs, fees, taxes</th><th>Items destroyed</th>"+
+    "<th>Coins in circulation</th><th>Coins per player</th><th>Price index</th><th>Monthly change</th></tr>"+
+    r.rows.map(q=>"<tr"+(q.m===12?' class="final"':"")+"><td>"+(q.m||"Launch")+"</td><td>"+fmtK(q.n)+"</td><td>"+
+      (q.m?"+"+veShort(q.inflow):"—")+"</td><td>"+(q.m?"−"+veShort(q.outRep):"—")+"</td><td>"+(q.m?"−"+veShort(q.outDes):"—")+"</td><td>"+
+      veShort(q.M)+"</td><td>"+fmtK(q.c)+"</td><td>"+fmtK(q.P)+"</td><td>"+(q.m?vePct(q.infl):"—")+"</td></tr>").join("");
 }
+
 function veRender(){
   const x=veRead();
   $("o-ve-players").textContent=fmtK(x.players);
@@ -1176,18 +1453,20 @@ function veRender(){
   $("ve-hero").dataset.state=st;$("ve-pill").textContent=VE_STATES[st].label;
   $("ve-t-p").textContent=(pct>0?"+":pct<0?"−":"")+Math.abs(pct)+"%";
   $("ve-t-p-sub").textContent="Price index 100 → "+fmtK(r.rows[12].P)+" · coins in circulation "+veShort(r.rows[0].M)+" → "+veShort(r.rows[12].M);
-  /* coins in vs. coins out, drawn to the same scale */
-  const mx=Math.max(x.faucet,sinks,1), net=x.faucet-sinks;
+  /* coins in vs. coins out, drawn to the same scale; the two sinks split by a 2px surface gap */
+  const mx=Math.max(x.faucet,sinks,1), net=x.faucet-sinks, gap=x.repair>0&&x.destroy>0;
   $("ve-bar-in").style.width=(100*x.faucet/mx)+"%";
   $("ve-bar-rep").style.width=(100*x.repair/mx)+"%";
-  $("ve-bar-des").style.width=(100*x.destroy/mx)+"%";
+  $("ve-bar-rep").style.borderRadius=x.destroy>0?"0":"0 4px 4px 0";
+  $("ve-bar-des").style.width=gap?"calc("+(100*x.destroy/mx)+"% - 2px)":(100*x.destroy/mx)+"%";
+  $("ve-bar-des").style.marginLeft=gap?"2px":"0";
   $("ve-v-in").textContent=fmtK(x.faucet);$("ve-v-out").textContent=fmtK(sinks);
   $("ve-net").innerHTML=(net?"Net <strong>"+(net>0?"+":"−")+Math.abs(net)+" coins</strong> per player per day. ":
     "In and out are <strong>exactly balanced</strong>. ")+"Across "+fmtK(x.players)+" players: <strong>"+veShort(x.players*x.faucet*30)+
     " in</strong> and <strong>"+veShort(x.players*sinks*30)+" out</strong> in the first month.";
   $("ve-verdict").dataset.state=st;
   $("ve-verdict").innerHTML=veVerdict(x,r,chg,st);
-  veDraw(r,st);veTable(r);
+  vePrice(r,st);veFlows(r);veMap(x);veMoney(r);veInfl(r);veTable(r);
   document.querySelectorAll("#ve-presets .mode-btn").forEach(b=>{const p=VE_PRESETS[b.dataset.preset];
     b.classList.toggle("active",VE_IDS.every(k=>p[k]===x[k]))});
 }
@@ -1196,10 +1475,11 @@ document.querySelectorAll("#ve-presets .mode-btn").forEach(b=>{
   const c=Math.round((veModel(VE_PRESETS[b.dataset.preset]).rows[12].P/100-1)*100);
   b.querySelector("small").textContent=c>0?"prices +"+c+"%":c<0?"prices −"+Math.abs(c)+"%":"prices flat";
 });
+$("ve-scale-bar").style.background="linear-gradient(to right,"+[-1,-0.5,0,0.5,1].map(t=>veDiv(Math.pow(2,2*t)-1)).join(",")+")";
 VE_IDS.forEach(k=>$("ve-"+k).addEventListener("input",veRender));
 document.querySelectorAll("#ve-presets .mode-btn").forEach(b=>b.addEventListener("click",()=>{
   const p=VE_PRESETS[b.dataset.preset];VE_IDS.forEach(k=>$("ve-"+k).value=p[k]);veRender()}));
-/* the chart measures its container, so redraw when the tab becomes visible or the window resizes */
+/* the charts measure their containers, so redraw when the tab becomes visible or the window resizes */
 document.addEventListener("tabshown",e=>{if(e.detail==="economy")veRender()});
 let veRz=null;
 window.addEventListener("resize",()=>{clearTimeout(veRz);
