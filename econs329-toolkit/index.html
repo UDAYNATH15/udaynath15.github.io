@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Game Studio Toolkit — EconS 329</title>
-<meta name="description" content="Interactive economics tools for game pitches: size up your market, plan your budget, break-even, and 3-year NPV. Built by Uday Nath for EconS 329 (The Economics of Gaming) at WSU.">
+<meta name="description" content="Interactive economics tools for game pitches: size up your market, plan your budget, break-even, and 3-year NPV, and balance an in-game economy. Built by Uday Nath for EconS 329 (The Economics of Gaming) at WSU.">
 <meta name="author" content="Uday Nath">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -134,6 +134,12 @@
   details.how summary{cursor:pointer;color:var(--forest);font-weight:600}
   details.how p{margin-top:6px}
   .empty{font-size:13.5px;color:var(--muted);padding:26px 8px;text-align:center}
+  /* Virtual Economy Lab */
+  .preset-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:4px 0 6px}
+  .preset-row .mode-btn{font-size:13px;padding:7px 8px}
+  .ve-wrap{position:relative;overflow-x:auto}
+  .ve-wrap svg{display:block}
+  .tile.warn .t-value{color:var(--bad)}
   /* About */
   .about p{max-width:680px;margin-bottom:14px;font-size:15px}
   footer{border-top:1px solid var(--line);margin-top:36px;padding:20px 0 30px;font-size:13px;color:var(--muted)}
@@ -147,11 +153,12 @@
     <div class="kicker">EconS 329 · The Economics of Gaming · WSU</div>
     <h1>Game Studio Toolkit</h1>
     <p>Interactive tools for thinking through the <em>economics</em> of your game pitch — budget, break-even,
-       market, and monetization. Built by <a href="https://udaynath15.github.io/">Uday Nath</a> for EconS 329,
+       market, in-game economy, and monetization. Built by <a href="https://udaynath15.github.io/">Uday Nath</a> for EconS 329,
        one feature per week. <strong>Optional and ungraded</strong> — a sanity-check companion, not a submission tool.</p>
     <nav class="tabs" role="tablist">
       <button class="tab-btn active" data-tab="simulator" role="tab">Studio Simulator</button>
       <button class="tab-btn" data-tab="scanner" role="tab">Market Scanner</button>
+      <button class="tab-btn" data-tab="economy" role="tab">Virtual Economy</button>
       <button class="tab-btn" data-tab="roadmap" role="tab">Pitch Roadmap</button>
       <button class="tab-btn" data-tab="about" role="tab">About &amp; Changelog</button>
     </nav>
@@ -335,6 +342,78 @@
   </div>
 </section>
 
+<!-- ============ VIRTUAL ECONOMY LAB ============ -->
+<section id="economy" class="tool">
+  <p class="intro">Every in-game currency has <strong>faucets</strong> that add coins (quest rewards, loot) and <strong>sinks</strong>
+  that remove them (repairs, fees, items destroyed). Balance the two for your game and watch what happens to prices over
+  its first year: the same forces EVE Online's developer tracks in its monthly economic reports.</p>
+
+  <div class="sim-grid">
+    <div>
+      <div class="panel">
+        <h3>Start from an example</h3>
+        <div class="preset-row" id="ve-presets">
+          <button class="mode-btn" type="button" data-preset="leaky">Leaky faucet</button>
+          <button class="mode-btn" type="button" data-preset="balanced">Balanced</button>
+          <button class="mode-btn" type="button" data-preset="war">War as a sink (EVE-style)</button>
+          <button class="mode-btn" type="button" data-preset="taxed">Over-taxed</button>
+        </div>
+        <div class="hint">Then move the sliders to match your own game.</div>
+      </div>
+      <div class="panel">
+        <h3>Players</h3>
+        <div class="field"><label for="ve-players">Active players at launch <output id="o-ve-players">10,000</output></label>
+          <input type="range" id="ve-players" min="1000" max="100000" step="1000" value="10000"></div>
+        <div class="field"><label for="ve-growth">Player growth per month <output id="o-ve-growth">0%</output></label>
+          <input type="range" id="ve-growth" min="-10" max="20" step="1" value="0">
+          <div class="hint">New players join with the starting coins; players who leave take their coins out of circulation.</div></div>
+        <div class="field"><label for="ve-start">Starting coins per player <output id="o-ve-start">5,000</output></label>
+          <input type="range" id="ve-start" min="500" max="20000" step="500" value="5000"></div>
+      </div>
+      <div class="panel">
+        <h3>Faucets: coins in</h3>
+        <div class="field"><label for="ve-faucet">Quests, loot and rewards <output id="o-ve-faucet">120 / day</output></label>
+          <input type="range" id="ve-faucet" min="0" max="500" step="5" value="120">
+          <div class="hint">Coins an average player earns from the game each day.</div></div>
+      </div>
+      <div class="panel">
+        <h3>Sinks: coins out</h3>
+        <div class="field"><label for="ve-repair">Repairs, fees and taxes <output id="o-ve-repair">80 / day</output></label>
+          <input type="range" id="ve-repair" min="0" max="500" step="5" value="80"></div>
+        <div class="field"><label for="ve-destroy">Items destroyed or used up <output id="o-ve-destroy">30 / day</output></label>
+          <input type="range" id="ve-destroy" min="0" max="500" step="5" value="30">
+          <div class="hint">Ships lost in battle, consumables, crafting materials: coins spent on things that disappear.</div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="tiles">
+        <div class="tile"><div class="t-label">Coins in per month</div><div class="t-value" id="ve-t-in">—</div><div class="t-sub">faucets, first month</div></div>
+        <div class="tile"><div class="t-label">Coins out per month</div><div class="t-value" id="ve-t-out">—</div><div class="t-sub" id="ve-t-out-sub"></div></div>
+        <div class="tile" id="ve-tile-p"><div class="t-label">Prices after 12 months</div><div class="t-value" id="ve-t-p">—</div><div class="t-sub" id="ve-t-p-sub"></div></div>
+      </div>
+      <div class="verdict" id="ve-verdict" aria-live="polite"></div>
+      <div class="chart-box">
+        <h3>Price level over the first year</h3>
+        <div class="sub">Launch prices = 100 (dashed line). The shaded band is ±10%: a stable economy.</div>
+        <div class="ve-wrap" id="ve-chart"></div>
+        <div class="table-scroll"><table class="cash" id="ve-table"></table></div>
+      </div>
+      <div class="econ-note"><strong>The economics you're using:</strong> when more coins chase the same goods, prices rise. That is the
+        <strong>quantity theory of money</strong> (MV = PQ) from Lesson 3.1. EVE Online's developer publishes a <strong>Monthly Economic
+        Report</strong> to track exactly these faucets and sinks. Designers keep the two in balance so that what players earn keeps its
+        value, and the best sinks are things players <em>want</em> to buy (upgrades, cosmetics, convenience), not punishments.
+        <details class="how"><summary>How the model works</summary>
+          <p>Each month, every player earns the faucet amount and pays the sink amounts for 30 days. With the velocity of money
+          and the goods each player produces held constant, the price level moves with coins per player (P ∝ M ÷ players).
+          New players join with the starting coins; players who leave take their coins out of circulation; a balance cannot
+          go below zero. It is a teaching model, not a forecast.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ROADMAP ============ -->
 <section id="roadmap" class="tool">
   <p class="intro">The four parts of your final pitch, as a self-check. Under each part are the questions your
@@ -350,7 +429,7 @@
   <h2 style="font-size:22px;margin-bottom:10px">About this project</h2>
   <p>This toolkit is a semester-long build for <strong>EconS 329 — The Economics of Gaming</strong> at
   Washington State University. Each week, one feature is added and published here. The goal: give students a fast
-  way to test the numbers behind their game proposals — market, budget, break-even, and net present value — against the
+  way to test the numbers behind their game proposals — market, budget, break-even, net present value, and the in-game economy — against the
   same criteria the course uses.</p>
   <p>It is <strong>optional and ungraded</strong>. Nothing here is submitted; the official course lives in Canvas.
   Numbers produced by the simulator are teaching estimates, not market research — your own cited sources always win.</p>
@@ -361,6 +440,7 @@
     <tr><th>Week</th><th style="text-align:left">What was added</th></tr>
     <tr><td>Week 2</td><td style="text-align:left">v1 — Studio Simulator (budget, break-even, 3-yr NPV @ 5%) and Pitch Roadmap</td></tr>
     <tr><td>Week 4</td><td style="text-align:left">Market Scanner — the timed five-similar-games test, with a saturation verdict, a price-vs-popularity positioning map, and a one-click hand-off of competitor pricing to the Simulator</td></tr>
+    <tr><td>Week 5</td><td style="text-align:left">Virtual Economy Lab — balance an in-game currency's faucets and sinks and watch coins per player and prices over the first year (the quantity theory of money), with four example economies and a verdict</td></tr>
   </table>
 </section>
 
@@ -918,6 +998,120 @@ $("sc-copy").addEventListener("click",async()=>{
   setTimeout(()=>{c.textContent="Copy summary"},1800);
 });
 scRender();
+
+/* ---------- virtual economy lab ---------- */
+const VE_PRESETS={
+  leaky:   {players:10000,growth:0,start:5000,faucet:120,repair:80,destroy:30},
+  balanced:{players:10000,growth:0,start:5000,faucet:120,repair:85,destroy:35},
+  war:     {players:10000,growth:0,start:5000,faucet:150,repair:45,destroy:105},
+  taxed:   {players:10000,growth:0,start:5000,faucet:120,repair:95,destroy:30}
+};
+const VE_IDS=["players","growth","start","faucet","repair","destroy"];
+const veShort=v=>{const a=Math.abs(v);return a>=1e9?(v/1e9).toFixed(1)+"B":a>=1e6?(v/1e6).toFixed(1)+"M":a>=1e4?Math.round(v/1e3)+"K":fmtK(v)};
+function veRead(){const o={};VE_IDS.forEach(k=>o[k]=+$("ve-"+k).value);return o}
+/* monthly steps: every player earns the faucets and pays the sinks for 30 days; prices follow coins per player (P ∝ M/players) */
+function veModel(x){
+  const net=x.faucet-x.repair-x.destroy;
+  let n=x.players,c=x.start,brokeAt=null;
+  const rows=[{m:0,n,c}];
+  for(let t=1;t<=12;t++){
+    const n2=Math.max(1,n*(1+x.growth/100));
+    let c2=c+net*30;
+    if(c2<0){c2=0;if(brokeAt==null)brokeAt=t}
+    if(n2>n)c2=(n*c2+(n2-n)*x.start)/n2;              /* newcomers arrive holding the starting coins */
+    n=n2;c=c2;rows.push({m:t,n,c});
+  }
+  rows.forEach(r=>{r.M=r.n*r.c;r.P=100*r.c/x.start});
+  return {net,rows,brokeAt};
+}
+function veVerdict(x,r,chg){
+  const sinks=x.repair+x.destroy, pct=Math.round(chg*100);
+  const ratio=x.faucet?" (your sinks remove "+Math.round(100*sinks/x.faucet)+"% of what your faucets add)":"";
+  let v;
+  if(!x.faucet&&!sinks)v="<strong>No coins are moving yet.</strong> Add faucets (rewards players earn) and sinks (things they "+
+    "spend on) to model your game's economy.";
+  else if(r.brokeAt!=null)v="<strong>Players run out of coins by month "+r.brokeAt+".</strong> Sinks take more than players earn, so the "+
+    "economy stalls: nobody can pay for repairs or fees. Raise rewards or ease the sinks.";
+  else if(chg>1)v="<strong>Runaway inflation.</strong> Prices rise "+pct+"% in a year"+ratio+". The currency is losing its meaning, "+
+    "the classic MMO problem that pushes players to trade items or real money instead. Strengthen your sinks before launch.";
+  else if(chg>0.10)v="<strong>Inflating.</strong> Faucets add more coins than sinks remove"+ratio+", so every player holds more coins "+
+    "while there are no more goods to buy. Prices rise "+pct+"% in a year: newcomers find everything expensive, and savings buy less. "+
+    "Add sinks players want, or trim rewards.";
+  else if(chg<-0.10)v="<strong>Deflating.</strong> Sinks remove more coins than faucets add"+ratio+", so coins get scarce and prices "+
+    "fall "+Math.abs(pct)+"% in a year. Players feel poor and hoard instead of trading. Ease the sinks or raise rewards.";
+  else v="<strong>Stable economy.</strong> Faucets and sinks are close to balanced"+ratio+", so prices stay within 10% of launch. "+
+    "What players earn keeps its value, which protects their trust in your game.";
+  const extras=[];
+  if(x.destroy>x.repair)extras.push("Like EVE Online, most of your sink is destruction: lost items must be rebuilt, which keeps players producing and trading.");
+  if(x.growth>0&&chg>0.10)extras.push("Player growth of "+x.growth+"% a month softens the inflation, because newcomers start with fewer coins than veterans.");
+  return v+(extras.length?'<span style="display:block;margin-top:8px">'+extras.join(" ")+"</span>":"");
+}
+function veDraw(r){
+  const box=$("ve-chart");box.textContent="";
+  /* drawn at the container's own width so text stays at true size; narrow phones scroll */
+  const W=Math.max(300,Math.min(560,Math.round(box.clientWidth||540))),H=240,L=46,R=46,T=14,B=30;
+  const Ps=r.rows.map(q=>q.P);
+  let lo=Math.min(90,...Ps),hi=Math.max(110,...Ps);
+  const raw=(hi-lo)/5,mag=Math.pow(10,Math.floor(Math.log10(raw)));
+  const step=[1,2,2.5,5,10].find(k=>k*mag>=raw)*mag;
+  lo=Math.max(0,Math.floor(lo/step)*step);hi=Math.ceil(hi/step)*step;
+  const X=m=>L+(W-L-R)*m/12, Y=v=>T+(H-T-B)*(1-(v-lo)/(hi-lo));
+  const NS="http://www.w3.org/2000/svg";
+  const svg=document.createElementNS(NS,"svg");
+  svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.setAttribute("width",W);svg.setAttribute("height",H);svg.setAttribute("role","img");
+  svg.setAttribute("aria-label","Price level over 12 months, from 100 at launch to "+Math.round(Ps[12])+"; the table below lists the values.");
+  const add=(tag,attrs,text)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);
+    if(text!=null)e.textContent=text;svg.appendChild(e);return e};
+  const tick={"font-size":11,fill:"#6B6B6B","font-family":"Inter, sans-serif"};
+  const b1=Y(Math.min(hi,110)),b2=Y(Math.max(lo,90));
+  add("rect",{x:L,y:b1,width:W-L-R,height:Math.max(0,b2-b1),fill:"#1F7A55","fill-opacity":0.08});
+  for(let v=lo;v<=hi+1e-9;v+=step){const y=Y(v);
+    add("line",{x1:L,x2:W-R,y1:y,y2:y,stroke:"#E5DFD3","stroke-width":1});
+    add("text",{...tick,x:L-8,y:y+4,"text-anchor":"end"},fmtK(v));}
+  add("line",{x1:L,x2:W-R,y1:Y(100),y2:Y(100),stroke:"#A9802A","stroke-width":1.5,"stroke-dasharray":"5 4"});
+  [0,3,6,9,12].forEach(m=>add("text",{...tick,x:X(m),y:H-B+18,"text-anchor":"middle"},m?m+" mo":"Launch"));
+  add("path",{d:Ps.map((p,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(p).toFixed(1)).join(" "),fill:"none",stroke:"#1F7A55",
+    "stroke-width":2.5,"stroke-linejoin":"round"});
+  Ps.forEach((p,i)=>{
+    const c=add("circle",{cx:X(i),cy:Y(p),r:i===12?4.5:3,fill:"#1F7A55",stroke:"#FFFFFF","stroke-width":1.5});
+    const t=document.createElementNS(NS,"title");t.textContent=(i?"Month "+i:"Launch")+": price index "+Math.round(p);c.appendChild(t);
+  });
+  add("text",{x:X(12)+9,y:Y(Ps[12])+4,"font-size":12.5,"font-weight":700,fill:"#2B2B2B","font-family":"Inter, sans-serif"},fmtK(Ps[12]));
+  box.appendChild(svg);
+}
+function veTable(r){
+  $("ve-table").innerHTML="<tr><th>Month</th><th>Players</th><th>Coins per player</th><th>Coins in circulation</th><th>Price index</th></tr>"+
+    [0,3,6,9,12].map(m=>{const q=r.rows[m];
+      return "<tr><td>"+(m?m:"Launch")+"</td><td>"+fmtK(q.n)+"</td><td>"+fmtK(q.c)+"</td><td>"+veShort(q.M)+"</td><td>"+fmtK(q.P)+"</td></tr>"}).join("");
+}
+function veRender(){
+  const x=veRead();
+  $("o-ve-players").textContent=fmtK(x.players);
+  $("o-ve-growth").textContent=(x.growth>0?"+":"")+x.growth+"%";
+  $("o-ve-start").textContent=fmtK(x.start);
+  ["faucet","repair","destroy"].forEach(k=>$("o-ve-"+k).textContent=x[k]+" / day");
+  const r=veModel(x), sinks=x.repair+x.destroy, chg=r.rows[12].P/100-1, pct=Math.round(chg*100);
+  $("ve-t-in").textContent=veShort(x.players*x.faucet*30);
+  $("ve-t-out").textContent=veShort(x.players*sinks*30);
+  $("ve-t-out-sub").textContent=x.faucet?"sinks remove "+Math.round(100*sinks/x.faucet)+"% of what comes in":
+    sinks?"sinks only: no faucets":"no coins moving yet";
+  $("ve-t-p").textContent=(pct>0?"+":pct<0?"−":"")+Math.abs(pct)+"%";
+  $("ve-t-p-sub").textContent="price index 100 → "+fmtK(r.rows[12].P);
+  $("ve-tile-p").classList.toggle("warn",Math.abs(chg)>0.10);
+  $("ve-verdict").innerHTML=veVerdict(x,r,chg);
+  veDraw(r);veTable(r);
+  document.querySelectorAll("#ve-presets .mode-btn").forEach(b=>{const p=VE_PRESETS[b.dataset.preset];
+    b.classList.toggle("active",VE_IDS.every(k=>p[k]===x[k]))});
+}
+VE_IDS.forEach(k=>$("ve-"+k).addEventListener("input",veRender));
+document.querySelectorAll("#ve-presets .mode-btn").forEach(b=>b.addEventListener("click",()=>{
+  const p=VE_PRESETS[b.dataset.preset];VE_IDS.forEach(k=>$("ve-"+k).value=p[k]);veRender()}));
+/* the chart measures its container, so redraw when the tab becomes visible or the window resizes */
+document.addEventListener("tabshown",e=>{if(e.detail==="economy")veRender()});
+let veRz=null;
+window.addEventListener("resize",()=>{clearTimeout(veRz);
+  veRz=setTimeout(()=>{if($("economy").classList.contains("active"))veRender()},150)});
+veRender();
 </script>
 </body>
 </html>
