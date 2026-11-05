@@ -252,6 +252,8 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       display: block;
     }
+    /* one landscape (4:3) and one portrait (3:4) photo: 16fr 9fr keeps them the same height */
+    .award-images { grid-template-columns: 16fr 9fr; }
     @media (max-width: 640px) {
       .talk-images { grid-template-columns: 1fr; }
     }
@@ -590,6 +592,10 @@
       <div class="cv-entry-title">Excellence in Research Award</div>
       <div class="cv-entry-org">School of Economic Sciences, Washington State University</div>
       <div class="cv-entry-date">2026</div>
+      <div class="talk-images award-images">
+        <img src="award_ses_excellence_2026_1.jpg" alt="Uday Nath receiving the SES Excellence in Research Award at the School of Economic Sciences coffee hour, November 2026" />
+        <img src="award_ses_excellence_2026_2.jpg" alt="Uday Nath holding the Excellence in Research Award certificate, School of Economic Sciences, Washington State University, 2026" />
+      </div>
     </div>
     <div class="cv-entry">
       <div class="cv-entry-title">IATRC Ph.D. Student Travel Award</div>
